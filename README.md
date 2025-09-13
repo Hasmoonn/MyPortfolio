@@ -1,12 +1,51 @@
-# React + Vite
+# Mohamed Hasmoon Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my personal portfolio! This website showcases my skills, projects, and experience as a software engineer and web developer.  
 
-Currently, two official plugins are available:
+<img width="1812" height="862" alt="image" src="https://github.com/user-attachments/assets/4577b2de-0a52-481a-b07f-bc4723f326a2" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Table of Contents
+- [About Me]
+- [Features]
+- [Technologies Used]
+- [Projects]
+- [Contact]
+- [License]
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## About Me
+I am Mohamed Hasmoon, a software engineering student at Sabaragamuwa University of Sri Lanka. I specialize in web development using the **MERN/PERN stack**, building responsive and interactive web applications.  
+I have a strong foundation in programming, problem-solving, and developing user-friendly solutions.  
+
+**Education Highlights:**
+- Completed A/Ls at KM/Zahira College, Kalmunai  
+- Combined Maths: A, Chemistry: B, Physics: C  
+- Z-Score: 1.472  
+
+
+## Features
+- Clean, modern, and responsive UI design  
+- Portfolio showcase with projects and achievements  
+- Contact form integrated with email functionality  
+- Dark/light mode support  
+- Easy navigation with a smooth user experience  
+
+
+## Technologies Used
+- **Frontend:** React.js, Tailwind CSS, HTML, CSS, JavaScript  
+- **Backend/Email:** EmailJS (for contact form)  
+- **Tools:** Vite, Lucide React icons, React Toastify  
+
+
+## Contact
+You can reach me via:  
+- **Email:** mohamedhasmoon175@gmail.com  
+- **Phone:** (+94) 76 9660195  
+- **Location:** No 538, Lotus Road, Sainthamaruthu 14, Sri Lanka  
+
+Or use the contact form available on this portfolio website.  
+
+## License
+This portfolio is open-source and free to use.  
+
