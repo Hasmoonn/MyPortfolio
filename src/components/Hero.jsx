@@ -6,7 +6,7 @@ import me from '../assets/me.jpg'
 const Hero = () => {
 
   return (
-    <section className='min-h-screen flex items-center justify-center relative overflow-hidden'>
+    <section className='w-full min-h-screen flex items-center justify-center relative overflow-hidden'>
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-36 w-80 h-80 gradient-primary rounded-full opacity-25 animate-float"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 gradient-secondary rounded-full opacity-25 animate-float" style={{ animationDelay: "-3s" }}></div>

@@ -37,7 +37,7 @@ const Contact = () => {
 
 
   return (
-    <section id='contact' className="pt-20 py-16  px-4 relative overflow-hidden">
+    <section id='contact' className="pt-20 py-16 w-full px-4 relative overflow-hidden">
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-10 right-10 w-96 h-96 gradient-primary rounded-full mix-blend-multiply filter blur-3xl animate-glow"></div>
         <div className="absolute bottom-10 left-10 w-96 h-96 gradient-hero rounded-full mix-blend-multiply filter blur-3xl animate-glow delay-2000"></div>

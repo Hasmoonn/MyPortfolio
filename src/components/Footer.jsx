@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
   return (
     <footer className="py-12 px-4 border-t border-[rgba(var(--border),0.5)]">
-      <div className='mx-auto max-w-6xl'>
+      <div className='w-full mx-auto max-w-6xl'>
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <span className="text-2xl font-bold gradient-text">-Hasmoon-</span>

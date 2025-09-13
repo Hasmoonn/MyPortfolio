@@ -11,7 +11,7 @@ const Projects = () => {
 
   return (
     <section id="projects" className="pt-20 py-16 px-5">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
             Featured Projects

@@ -6,7 +6,7 @@ const About = () => {
   const [showSkills, setShowSkills] = useState(false);
 
   return (
-    <section id='about' className='pt-20 py-16 px-6 relative overflow-hidden'>
+    <section id='about' className='w-full pt-20 py-16 px-6 relative overflow-hidden'>
       <div className='absolute inset-0 opacity-50'>
         <div className="absolute top-20 left-10 w-72 h-72 gradient-hero rounded-full mix-blend-multiply filter blur-2xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-72 h-72 gradient-secondary rounded-full mix-blend-multiply filter blur-2xl animate-pulse delay-1000"></div>
