@@ -9,7 +9,7 @@ const Education = () => {
   const displayedCertifications = showAllCertifications ? certifications : certifications.slice(0, 4);
 
   return (
-    <section id="education" className="pt-20 py-16 px-4">
+    <section id="education" className="pt-24 py-16 px-4">
       <div className="w-full max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">Education & Certifications</h2>
