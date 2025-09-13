@@ -30,11 +30,11 @@ const Projects = () => {
                   <img src={project.image} alt={project.title} className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <div className="absolute bottom-4 right-4 flex gap-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Link className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
+                    <Link to={project.github} target='_blank' className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
                       <Github className="h-4 w-4" />
                     </Link>
 
-                    <Link className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
+                    <Link to={project.live} target='_blank' className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
                       <ExternalLink className="h-4 w-4" />
                     </Link>
                   </div>

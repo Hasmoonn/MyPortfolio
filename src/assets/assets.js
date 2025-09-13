@@ -38,48 +38,40 @@ export const projects = [
     title: "ParkSwift",
     description: "ParkSwift is an online parking reservation system designed to simplify parking by connecting drivers with available parking spaces and enabling space owners to monetize their unused spots. The platform offers a seamless experience with features like instant booking, secure payments, and contactless entry.",
     image: parkswift,
-    technologies: ["React", "Node.js","Express.js", "MongoDB", "Stripe"],
-    github: "#",
-    live: "#"
+    technologies: ["React", "Node.js","Express.js", "MongoDB", "Stripe", "Cloudinary", "Multer"],
+    github: "https://github.com/sampathmenuka/ParkSwift",
+    live: ""
   },
   {
     title: "MERN Authentication",
     description: "A full-stack MERN (MongoDB, Express.js, React.js, Node.js) authentication system with features like user registration, login, email verification with OTP, and password reset via OTP. I have done this project by learning MERN day by day.",
     image: mernAuth,
     technologies: ["React", "Node.js","Express.js", "MongoDB", "Axios"],
-    github: "#",
-    live: "#"
+    github: "https://github.com/Hasmoonn/MERN-Authentication",
+    live: ""
   },
   {
     title: "Simple Portfolio",
     description: "This is my personal portfolio website built using HTML, CSS, and JavaScript. It showcases my skills, projects, and experience in software development. The website is fully responsive and includes interactive UI elements for a better user experience.",
     image: portfolio,
     technologies: ["HTML3", "CSS3", "JavaScript"],
-    github: "#",
-    live: "#"
+    github: "https://github.com/Hasmoonn/Portfolio",
+    live: "https://hasmoon-portfolio.vercel.app/"
   },
   {
-    title: "Mobile Banking App",
-    description: "Secure mobile banking application with biometric authentication, transaction history, and budget tracking features.",
+    title: "Luxivo",
+    description: "Luxivo is a modern e-commerce website designed to provide users with a seamless online shopping experience. It offers a wide range of products with secure payments, user-friendly navigation, and responsive design, ensuring convenience for both buyers and sellers.",
     image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=300&fit=crop",
-    technologies: ["React Native", "Firebase", "Redux", "Expo"],
-    github: "#",
-    live: "#"
+    technologies: ["React", "Node.js","Express.js", "MongoDB", "Stripe", "Multer"],
+    github: "https://github.com/Hasmoonn/Luxivo_E-Commerce_Website",
+    live: "https://luxivo-front.vercel.app/"
   },
   {
-    title: "Social Media Platform",
-    description: "Full-featured social media platform with posts, stories, messaging, and advanced privacy controls.",
-    image: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=500&h=300&fit=crop",
-    technologies: ["Vue.js", "Express", "PostgreSQL", "Redis"],
-    github: "#",
-    live: "#"
-  },
-  {
-    title: "Healthcare Management System",
-    description: "Comprehensive healthcare management system for clinics with patient records, appointment scheduling, and billing.",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=500&h=300&fit=crop",
-    technologies: ["Angular", "Java", "MySQL", "Spring Boot"],
-    github: "#",
+    title: "Netflix Clone",
+    description: "Netflix Clone is a web application that replicates the core features of Netflix, including user authentication, browsing movies/shows, and video streaming. It is built with a modern tech stack to deliver a smooth and responsive user experience.",
+    image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500&h=300&fit=crop",
+    technologies: ["React", "CSS", "Firebase"],
+    github: "https://github.com/Hasmoonn/Netflix_Clone_React",
     live: "#"
   },
   {
