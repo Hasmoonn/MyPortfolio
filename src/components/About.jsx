@@ -1,12 +1,36 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {skills} from '../assets/assets.js'
+import Skills from './Skills.jsx';
+import Counter from './Counter.jsx';
 
 const About = () => {
 
-  const [showSkills, setShowSkills] = useState(false);
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.6 } // trigger when 60% visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <section id='about' className='w-full pt-24 py-16 px-6 relative overflow-hidden'>
+    <section id='about' ref={sectionRef} className='w-full pt-24 py-16 px-6 relative overflow-hidden'>
       <div className='absolute inset-0 opacity-50'>
         <div className="absolute top-20 left-10 w-72 h-72 gradient-hero rounded-full mix-blend-multiply filter blur-2xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-72 h-72 gradient-secondary rounded-full mix-blend-multiply filter blur-2xl animate-pulse delay-1000"></div>
@@ -53,115 +77,28 @@ const About = () => {
 
             <div className="grid grid-cols-3 gap-6 text-center">
               <div>
-                <div className="text-3xl font-bold gradient-text mb-2">20+</div>
+                <div className="text-3xl font-bold gradient-text mb-2">
+                  <Counter end={20} startCount={isVisible} />+
+                </div>
                 <div className="text-[rgb(var(--muted-foreground))] text-sm">Projects Completed</div>
               </div>
               <div>
-                <div className="text-3xl font-bold gradient-text mb-2">1+</div>
+                <div className="text-3xl font-bold gradient-text mb-2">
+                  <Counter end={1} startCount={isVisible} />+
+                </div>
                 <div className="text-[rgb(var(--muted-foreground))] text-sm">Years Experience</div>
               </div>
               <div>
-                <div className="text-3xl font-bold gradient-text mb-2">10+</div>
+                <div className="text-3xl font-bold gradient-text mb-2">
+                  <Counter end={10} startCount={isVisible} />+
+                </div>
                 <div className="text-[rgb(var(--muted-foreground))] text-sm">Happy Clients</div>
               </div>
             </div>
           </div>
 
           <div className="animate-fade-in-right">
-            <div className="glass-card p-5 lg:p-8 rounded-2xl">
-              <h4 className="text-2xl font-bold mb-6 text-center text-[rgb(var(--muted-foreground))]">Technical Expertise</h4>
-              <div className="space-y-4 mb-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>HTML5</span>
-                    <span>90%</span>
-                  </div>
-                  <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                  <div className="gradient-secondary h-2 rounded-full" style={{ width: "90%" }}></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>CSS3</span>
-                    <span>85%</span>
-                  </div>
-                  <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                  <div className="gradient-secondary h-2 rounded-full" style={{ width: "85%" }}></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>JavaScript</span>
-                    <span>80%</span>
-                  </div>
-                  <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                  <div className="gradient-secondary h-2 rounded-full" style={{ width: "80%" }}></div>
-                  </div>
-                </div>
-                
-                {
-                  showSkills && 
-                  <>
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>React.JS</span>
-                        <span>85%</span>
-                      </div>
-                      <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                      <div className="gradient-secondary h-2 rounded-full" style={{ width: "85%" }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>Node.js/Express.js</span>
-                        <span>80%</span>
-                      </div>
-                      <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                        <div className="gradient-secondary h-2 rounded-full" style={{ width: "80%" }}></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>MongoDB</span>
-                        <span>85%</span>
-                      </div>
-                      <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                      <div className="gradient-secondary h-2 rounded-full" style={{ width: "85%" }}></div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>Java</span>
-                        <span>80%</span>
-                      </div>
-                      <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                        <div className="gradient-secondary h-2 rounded-full" style={{ width: "80%" }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span>SpringBoot</span>
-                        <span>80%</span>
-                      </div>
-                      <div className="w-full bg-[rgb(var(--muted))] rounded-full h-2">
-                        <div className="gradient-secondary h-2 rounded-full" style={{ width: "80%" }}></div>
-                      </div>
-                    </div>
-                  </>  
-                }
-                 
-              </div>
-
-              <div className='flex justify-center mt-8'>
-                <button onClick={() => setShowSkills(!showSkills)} className='py-2 px-6 text-[rgb(var(--accent-foreground))] animate-glow font-medium border-none gradient-secondary outline-none rounded-lg'>
-                  {showSkills ? "Show Less" : "Show More Skills" }
-                </button>
-              </div>
-            </div>
+            <Skills />
           </div>
         </div>
       </div>
