@@ -26,9 +26,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-2 left-2 right-2 lg:top-3 lg:left-28 lg:right-28 z-50 transition-all duration-300 rounded-full ${ isScrolled ? "glass-card backdrop-blur-md" : "bg-transparent" }`}>
+    <nav className="fixed top-2 left-1 right-1 lg:top-3 lg:left-28 lg:right-28 z-50 transition-all duration-300">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className={`px-1 rounded-md sm:px-6 flex items-center justify-between h-16 transition-all duration-300 ${ isScrolled ? "glass-card sm:rounded-full backdrop-blur-md" : "bg-transparent" }`}>
           <div className="flex items-center">
             <span className="text-2xl font-bold gradient-text italic">
               It's HasMoon
@@ -53,7 +53,7 @@ const Navbar = () => {
             <ThemeToggle />
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:bg-[rgb(var(--muted-foreground),0.1)] hover:text-[rgb(var(--primary))] p-2 font-medium glass-card justify-center items-center flex hover:scale-110 transition-all duration-300 rounded-lg"
             >
-              {isMobileMenuOpen ? <X className="h-[1.2rem] w-[1.2rem] transition-all duration-300" /> : <Menu className="h-[1.2rem] w-[1.2rem] transition-all duration-300" />}
+              {isMobileMenuOpen ? <X className="h-[1rem] w-[1rem] transition-all duration-300" /> : <Menu className="h-[1rem] w-[1rem] transition-all duration-300" />}
             </button>
           </div>
         </div>
