@@ -26,7 +26,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${ isScrolled ? "glass-card backdrop-blur-md" : "bg-transparent" }`}>
+    <nav className={`fixed top-2 left-2 right-2 lg:top-3 lg:left-28 lg:right-28 z-50 transition-all duration-300 rounded-full ${ isScrolled ? "glass-card backdrop-blur-md" : "bg-transparent" }`}>
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -37,7 +37,7 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-x-8">
             {navItems.map((item) => (
-              <a key={item.name} href={item.href} className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] transition-colors duration-200 relative group" >
+              <a key={item.name} href={item.href} className="text-[rgb(var(--foreground))] hover:gradient-text transition-colors duration-200 font-medium relative group" >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 gradient-primary transition-all duration-300 group-hover:w-full"></span>
               </a>
