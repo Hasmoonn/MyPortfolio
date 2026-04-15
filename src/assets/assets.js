@@ -1,6 +1,10 @@
 import parkswift from '../assets/projectImages/parkswift.png'
 import mernAuth from '../assets/projectImages/mernAuth.png'
-import portfolio from '../assets/projectImages/portfolio.png'
+import eventBuddy from '../assets/projectImages/eventBuddy.png'
+import mobileApp from '../assets/projectImages/mobileApp.png'
+import inkspireAI from '../assets/projectImages/inkspireAI.png'
+import snapBlog from '../assets/projectImages/snapBlog.png'
+import luxivo from '../assets/projectImages/luxivo.png'
 
 // ------------- skills --------------
 import {Code, CodeSquare, Database, Palette} from 'lucide-react'
@@ -35,68 +39,119 @@ export const skills = [
 // --------------- projects ------------
 export const projects = [
   {
+    title: "Inkspire AI",
+    description:
+      "An AI content creation platform for generating and publishing articles with Gemini AI, featuring image optimization, interactive engagement tools, and a modern responsive UI.",
+    image: inkspireAI,
+    technologies: [
+      "Next.js",
+      "Convex",
+      "Tailwind CSS",
+      "Gemini API",
+      "ImageKit",
+      "Shadcn UI"
+    ],
+    github: "https://github.com/Hasmoonn/smart-creator-cms",
+    live: "https://smart-creator-cms.vercel.app/"
+  },
+  {
     title: "ParkSwift",
-    description: "ParkSwift is an online parking reservation system designed to simplify parking by connecting drivers with available parking spaces and enabling space owners to monetize their unused spots. The platform offers a seamless experience with features like instant booking, secure payments, and contactless entry.",
+    description:
+      "A scalable online parking slot reservation system enabling users to book parking spaces in real time with role-based access for users, slot owners, and admins. Includes secure authentication, dynamic pricing, notifications, and contactless entry.",
     image: parkswift,
-    technologies: ["React", "Node.js","Express.js", "MongoDB", "Stripe", "Cloudinary", "Multer"],
+    technologies: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT",
+      "Docker",
+      "Kubernetes",
+      "GitHub Actions",
+      "Nginx"
+    ],
     github: "https://github.com/sampathmenuka/ParkSwift",
-    live: ""
+    live: "not hosted yet"
   },
   {
-    title: "MERN Authentication",
-    description: "A full-stack MERN (MongoDB, Express.js, React.js, Node.js) authentication system with features like user registration, login, email verification with OTP, and password reset via OTP. I have done this project by learning MERN day by day.",
-    image: mernAuth,
-    technologies: ["React", "Node.js","Express.js", "MongoDB", "Axios"],
-    github: "https://github.com/Hasmoonn/MERN-Authentication",
-    live: ""
+    title: "Hybrid Student Attendance System",
+    description:
+      "A mobile-based attendance system using QR code, face recognition, and GPS verification to automate student attendance with real-time monitoring and lecturer dashboards.",
+    image: mobileApp,
+    technologies: [
+      "React Native",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Python",
+      "OpenCV"
+    ],
+    github: "https://github.com/SE6101-Community-Project/Student_Attendance_System",
+    live: "not hosted yet"
   },
   {
-    title: "Simple Portfolio",
-    description: "This is my personal portfolio website built using HTML, CSS, and JavaScript. It showcases my skills, projects, and experience in software development. The website is fully responsive and includes interactive UI elements for a better user experience.",
-    image: portfolio,
-    technologies: ["HTML3", "CSS3", "JavaScript"],
-    github: "https://github.com/Hasmoonn/Portfolio",
-    live: "https://hasmoon-portfolio.vercel.app/"
+    title: "EventBuddy",
+    description:
+      "An AI-powered event planning and vendor marketplace platform with role-based authentication, smart scheduling, budgeting assistance, and booking management.",
+    image: eventBuddy,
+    technologies: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "OpenAI API",
+      "Tailwind CSS"
+    ],
+    github: "https://github.com/Hasmoonn/EventBuddy",
+    live: "not hosted yet"
+  },
+  
+  {
+    title: "SnapBlog",
+    description:
+      "An AI-powered blogging platform that generates full blog posts from simple inputs with features for post management, comments, moderation, and admin dashboard.",
+    image: snapBlog,
+    technologies: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "AI Integration"
+    ],
+    github: "https://github.com/Hasmoonn/SnapBlog-AI_blog_generator",
+    live: "https://snapblog-ai-blog-generator-frontend.vercel.app/"
   },
   {
     title: "Luxivo",
-    description: "Luxivo is a modern e-commerce website designed to provide users with a seamless online shopping experience. It offers a wide range of products with secure payments, user-friendly navigation, and responsive design, ensuring convenience for both buyers and sellers.",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=300&fit=crop",
-    technologies: ["React", "Node.js","Express.js", "MongoDB", "Stripe", "Multer"],
+    description:
+      "A full-stack e-commerce platform with product browsing, cart system, secure checkout, and order management, built for scalable and responsive shopping experiences.",
+    image: luxivo,
+    technologies: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Stripe",
+      "Docker"
+    ],
     github: "https://github.com/Hasmoonn/Luxivo_E-Commerce_Website",
     live: "https://luxivo-front.vercel.app/"
   },
   {
-    title: "Netflix Clone",
-    description: "Netflix Clone is a web application that replicates the core features of Netflix, including user authentication, browsing movies/shows, and video streaming. It is built with a modern tech stack to deliver a smooth and responsive user experience.",
-    image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500&h=300&fit=crop",
-    technologies: ["React", "CSS", "Firebase"],
-    github: "https://github.com/Hasmoonn/Netflix_Clone_React",
-    live: "#"
-  },
-  {
-    title: "Cryptocurrency Tracker",
-    description: "Real-time cryptocurrency tracking app with portfolio management, price alerts, and market analysis tools.",
-    image: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=500&h=300&fit=crop",
-    technologies: ["Vue.js", "TypeScript", "CoinGecko API", "Chart.js"],
-    github: "#",
-    live: "#"
-  },
-  {
-    title: "Video Streaming Platform",
-    description: "Netflix-like streaming platform with user profiles, content recommendations, and subscription management.",
-    image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=500&h=300&fit=crop",
-    technologies: ["React", "AWS S3", "Lambda", "DynamoDB"],
-    github: "#",
-    live: "#"
-  },
-  {
-    title: "Food Delivery App",
-    description: "Complete food delivery solution with restaurant listings, order tracking, and payment integration.",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=500&h=300&fit=crop",
-    technologies: ["Flutter", "Firebase", "Google Maps", "Stripe"],
-    github: "#",
-    live: "#"
+    title: "MERN Authentication System",
+    description:
+      "A secure authentication system with user registration, login, OTP-based password reset, and JWT cookie-based session management.",
+    image: mernAuth,
+    technologies: [
+      "React",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JWT",
+      "Axios"
+    ],
+    github: "https://github.com/Hasmoonn/MERN-Authentication",
+    live: "not hosted yet"
   }
 ];
 

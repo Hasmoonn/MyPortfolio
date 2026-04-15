@@ -34,9 +34,15 @@ const Projects = () => {
                       <Github className="h-4 w-4" />
                     </Link>
 
-                    <Link to={project.live} target='_blank' className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
-                      <ExternalLink className="h-4 w-4" />
-                    </Link>
+                    {project.live && project.live !== "not hosted yet" && (
+                      <Link
+                        to={project.live}
+                        target="_blank"
+                        className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Link>
+                    )}
                   </div>
                 </div>
 

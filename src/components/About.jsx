@@ -75,7 +75,7 @@ const About = () => {
               Beyond technical expertise, I have professional experience working in the banking sector, which strengthened my analytical and communication skills. I enjoy turning ideas into real-world solutions, whether through designing seamless user interfaces, developing efficient APIs, or implementing advanced authentication and security practices.
             </p>
 
-            <div className="grid grid-cols-3 gap-6 text-center">
+            <div className="grid grid-cols-2 gap-6 text-center">
               <div>
                 <div className="text-3xl font-bold gradient-text mb-2">
                   <Counter end={20} startCount={isVisible} />+
@@ -88,12 +88,12 @@ const About = () => {
                 </div>
                 <div className="text-[rgb(var(--muted-foreground))] text-sm">Years Experience</div>
               </div>
-              <div>
+              {/* <div>
                 <div className="text-3xl font-bold gradient-text mb-2">
                   <Counter end={10} startCount={isVisible} />+
                 </div>
                 <div className="text-[rgb(var(--muted-foreground))] text-sm">Happy Clients</div>
-              </div>
+              </div> */}
             </div>
           </div>
 
