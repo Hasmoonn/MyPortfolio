@@ -1,95 +1,222 @@
-import React, { useState } from 'react'
-import { projects } from '../assets/assets.js';
-import { Link } from 'react-router-dom';
-import { ChevronDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react'
+import { ChevronDown, ChevronUp, Github, ExternalLink } from 'lucide-react'
+import { projects } from '../assets/assets.js'
+import '../styles/projects.css'
 
 const Projects = () => {
+  const [showAllProjects, setShowAllProjects] = useState(false)
+  const [visibleRows, setVisibleRows] = useState(new Set())
+  const [headerAnimStage, setHeaderAnimStage] = useState({
+    number: false,
+    heading: false,
+    separator: false,
+    text: false,
+    count: false,
+  })
 
-  const [showAllProjects, setShowAllProjects] = useState(false);
+  const headerRef = useRef(null)
+  const projectRowRefs = useRef([])
+  const headerAnimatedRef = useRef(false)
 
-  const displayedProjects = showAllProjects ? projects : projects.slice(0, 6);
+  const displayedProjects = showAllProjects ? projects : projects.slice(0, 4)
+
+  useEffect(() => {
+    const headerElement = headerRef.current
+    if (!headerElement) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !headerAnimatedRef.current) {
+          headerAnimatedRef.current = true
+          setTimeout(() => setHeaderAnimStage((p) => ({ ...p, number: true })), 0)
+          setTimeout(() => setHeaderAnimStage((p) => ({ ...p, heading: true })), 150)
+          setTimeout(() => setHeaderAnimStage((p) => ({ ...p, separator: true })), 200)
+          setTimeout(() => setHeaderAnimStage((p) => ({ ...p, text: true })), 300)
+          setTimeout(() => setHeaderAnimStage((p) => ({ ...p, count: true })), 400)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
+    )
+
+    observer.observe(headerElement)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const observers = []
+    const timer = setTimeout(() => {
+      projectRowRefs.current.filter(Boolean).forEach((rowRef, index) => {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setVisibleRows((prev) => new Set([...prev, index]))
+              observer.disconnect()
+            }
+          },
+          { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
+        )
+        observer.observe(rowRef)
+        observers.push(observer)
+      })
+    }, 50)
+
+    return () => {
+      clearTimeout(timer)
+      observers.forEach((o) => o.disconnect())
+    }
+  }, [displayedProjects.length])
+
+  const handleToggleProjects = () => {
+    setShowAllProjects((prev) => !prev)
+    setTimeout(() => setVisibleRows(new Set()), 50)
+  }
+
+  const getProjectIndex = (idx) => String(idx + 1).padStart(2, '0')
 
   return (
-    <section id="projects" className="pt-24 py-16 px-5">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-text">
-            Featured Projects
-          </h2>
-          <p className="text-md md:text-lg text-[rgb(var(--muted-foreground))] max-w-2xl mx-auto">
-            Here are some of my recent projects that showcase my skills in full-stack development, 
-            UI/UX design, and modern web technologies.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {
-            displayedProjects.map((project, index) => (
-              <div key={index} className="rounded-lg bg-[rgb(var(--card))] text-[rgb(var(--card-foreground))] shadow-sm glass-card border-0 overflow-hidden hover:scale-105 transition-all duration-300 group">
-                <div className='relative overflow-hidden'>
-                  <img src={project.image} alt={project.title} className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute bottom-4 right-4 flex gap-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Link to={project.github} target='_blank' className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]">
-                      <Github className="h-4 w-4" />
-                    </Link>
-
-                    {project.live && project.live !== "not hosted yet" && (
-                      <Link
-                        to={project.live}
-                        target="_blank"
-                        className="flex items-center justify-center rounded-md hover:scale-110 transition-all duration-300 h-8 w-8 bg-[rgb(var(--secondary))] hover:bg-[rgba(var(--secondary),0.8)]"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </Link>
-                    )}
-                  </div>
-                </div>
-
-                <div className='p-4 lg:p-6'>
-                  <h3 className="text-xl font-bold mb-3">
-                    {project.title}
-                  </h3>
-                  <p className="text-[rgb(var(--muted-foreground))] text-sm mb-4 line-clamp-3">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {
-                      project.technologies.map((tech, techIndex) => (
-                        <div key={techIndex} className="flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-transparent text-[rgb(var(--secondary-foreground))] bg-[rgb(var(--muted-foreground),0.2)]">
-                          {tech}
-                        </div>
-                      ))
-                    }
-                  </div>
-                </div>
-              </div>
-            ))
-          }
-        </div>
-
-        {projects.length > 6 && (
-          <div className="text-center mt-12">
-            <button onClick={() => setShowAllProjects(!showAllProjects)} className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium gradient-border hover:scale-105 transition-all duration-300 h-11 px-8 hover:bg-accent hover:text-[rgb(var(--accent-foreground))]"
+    <section id="projects" className="projects">
+      <div ref={headerRef} className="projects__zone-1">
+        <div className="projects__zone-1-container">
+          <div className="projects__zone-1-left">
+            <div
+              className={`projects__large-number ${
+                headerAnimStage.number ? 'projects__large-number--visible' : ''
+              }`}
             >
-              {
-              showAllProjects ? (
-                <>
-                  <ChevronUp className="mr-2 h-4 w-4" />
-                  Show Less
-                </>
+              03
+            </div>
+            <div className="projects__chapter-marker">[ 03 ]</div>
+          </div>
+
+          <div className="projects__zone-1-right">
+            <h1
+              className={`projects__section-heading ${
+                headerAnimStage.heading ? 'projects__section-heading--visible' : ''
+              }`}
+            >
+              Projects
+            </h1>
+            <div
+              className={`projects__heading-separator ${
+                headerAnimStage.separator ? 'projects__heading-separator--visible' : ''
+              }`}
+            />
+            <p
+              className={`projects__intro-text ${
+                headerAnimStage.text ? 'projects__intro-text--visible' : ''
+              }`}
+            >
+              A selection of work spanning full-stack systems, AI platforms, and scalable web
+              applications. Each represents thoughtful architecture and user-centered design.
+            </p>
+            <div
+              className={`projects__project-count ${
+                headerAnimStage.count ? 'projects__project-count--visible' : ''
+              }`}
+            >
+              {String(projects.length).padStart(2, '0')} Projects
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="projects__zone-2">
+        {displayedProjects.map((project, index) => (
+          <div
+            key={project.title}
+            ref={(el) => {
+              projectRowRefs.current[index] = el
+            }}
+            className={`projects__row ${
+              visibleRows.has(index) ? 'projects__row--visible' : ''
+            }`}
+          >
+            <div className="projects__row-index">
+              <span className="projects__row-index-text">{getProjectIndex(index)}</span>
+            </div>
+
+            <div className="projects__row-image">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="projects__row-image-img"
+                loading="lazy"
+                decoding="async"
+                width={320}
+                height={200}
+              />
+            </div>
+
+            <div className="projects__row-content">
+              <h3 className="projects__row-title">{project.title}</h3>
+              <div className="projects__row-separator" />
+              <p className="projects__row-description">{project.description}</p>
+
+              <div className="projects__tech-tags">
+                {project.technologies.map((tech) => (
+                  <span key={tech} className="projects__tech-tag">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="projects__row-links">
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="projects__row-link"
+                aria-label={`View ${project.title} source code on GitHub`}
+              >
+                <span>GitHub</span>
+                <Github className="projects__row-link-icon" />
+              </a>
+
+              {project.live && project.live !== 'not hosted yet' ? (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="projects__row-link"
+                  aria-label={`View ${project.title} live`}
+                >
+                  <span>Live</span>
+                  <ExternalLink className="projects__row-link-icon" />
+                </a>
               ) : (
-                <>
-                  <ChevronDown className="mr-2 h-4 w-4" />
-                  View All Projects ({projects.length - 6} more)
-                </>
+                <div className="projects__row-link projects__row-link--disabled">
+                  <span>Pending</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {projects.length > 4 && (
+        <div className="projects__zone-3">
+          <div className="projects__show-more-bar">
+            <span className="projects__project-count-text">
+              Showing {displayedProjects.length} of {projects.length} projects
+            </span>
+            <button
+              type="button"
+              onClick={handleToggleProjects}
+              className="projects__toggle-button"
+              aria-label={showAllProjects ? 'Show less projects' : 'Show all projects'}
+            >
+              <span>{showAllProjects ? 'Show Less' : 'View All'}</span>
+              {showAllProjects ? (
+                <ChevronUp className="projects__toggle-icon" />
+              ) : (
+                <ChevronDown className="projects__toggle-icon" />
               )}
             </button>
           </div>
-        )}
-      </div>
-
+        </div>
+      )}
     </section>
   )
 }
