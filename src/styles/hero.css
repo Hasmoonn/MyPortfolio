@@ -1,0 +1,520 @@
+/* ─── Luxury easing ──────────────────────────────────────── */
+.hero-reveal {
+  --ease-luxury: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ─── Background — scale settle ─────────────────────────── */
+.hero-reveal__bg {
+  transform: scale(1.06);
+  transition: transform 2.4s var(--ease-luxury);
+  will-change: transform;
+}
+
+.hero-reveal__bg--active {
+  transform: scale(1);
+}
+
+/* ─── Default — keep animations paused; active will run them ── */
+.hero-reveal__byline,
+.hero-reveal__word,
+.hero-reveal__separator,
+.hero-reveal__meta,
+.hero-reveal__subtitle,
+.hero-reveal__actions,
+.hero-reveal__social,
+.hero-reveal__avatar,
+.hero-reveal__scroll-hint {
+  animation-play-state: paused;
+}
+
+.hero-reveal--active .hero-reveal__byline,
+.hero-reveal--active .hero-reveal__word,
+.hero-reveal--active .hero-reveal__separator,
+.hero-reveal--active .hero-reveal__meta,
+.hero-reveal--active .hero-reveal__subtitle,
+.hero-reveal--active .hero-reveal__actions,
+.hero-reveal--active .hero-reveal__social,
+.hero-reveal--active .hero-reveal__avatar,
+.hero-reveal--active .hero-reveal__scroll-hint {
+  animation-play-state: running;
+}
+
+.hero-reveal--active .hero-reveal__role {
+  animation-play-state: running;
+}
+
+/* ─── Dot grid — faint architectural texture ─────────────── */
+.hero-reveal__grid {
+  background-image: radial-gradient(
+    rgba(var(--primary), 0.2) 1px,
+    transparent 2px
+  );
+  background-size: 28px 28px;
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    black 8%,
+    transparent 88%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 45%,
+    black 8%,
+    transparent 88%
+  );
+  will-change: transform;
+}
+
+/* ─── Film scan line — static decorative ─────────────────── */
+.hero-reveal__scan-line {
+  top: 30%;
+  height: 1px;
+  background: rgb(var(--border));
+  opacity: 0.3;
+}
+
+/* ─── Accent line — scroll-responsive depth marker ───────── */
+.hero-reveal__accent-line {
+  position: absolute;
+  left: clamp(1.25rem, 3vw, 2.5rem);
+  top: 15%;
+  width: 1px;
+  height: 60%;
+  background: rgb(var(--border));
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    black 0%,
+    black 50%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    black 0%,
+    black 50%,
+    transparent 100%
+  );
+  z-index: 5;
+  pointer-events: none;
+  transition: height 0.05s linear;
+}
+
+/* ─── Z-depth — text foreground, image recessed ─────────── */
+@media (min-width: 1024px) {
+  .hero-reveal__text-col {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-reveal__image-col {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Desktop avatar starts slightly scaled down */
+  .hero-reveal__avatar {
+    transform-origin: center center;
+  }
+
+  .hero-reveal--active .hero-reveal__avatar {
+    animation: hero-avatar-reveal 1.5s var(--ease-luxury) 0.3s forwards;
+  }
+}
+
+/* ─── Index label — chapter marker ───────────────────────── */
+.hero-reveal__byline {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.hero-reveal--active .hero-reveal__byline {
+  animation: hero-fade-rise 1.4s var(--ease-luxury) 0.2s forwards;
+}
+
+/* ─── Headline — clip-path stagger ───────────────────────── */
+.hero-reveal__headline {
+  opacity: 0;
+}
+
+.hero-reveal--active .hero-reveal__headline {
+  opacity: 1;
+}
+
+.hero-reveal__word {
+  display: block;
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+}
+
+.hero-reveal--active .hero-reveal__word {
+  animation: hero-clip-reveal 1.3s var(--ease-luxury) forwards;
+}
+
+/* Stagger headlines per line */
+.hero-reveal--active .hero-reveal__word:nth-of-type(1) {
+  animation-delay: 0.4s;
+}
+
+.hero-reveal--active .hero-reveal__word:nth-of-type(2) {
+  animation-delay: 0.65s;
+}
+
+/* ─── Separator — typographic breath ─────────────────────── */
+.hero-reveal__separator {
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.hero-reveal--active .hero-reveal__separator {
+  animation: hero-line-grow 1.2s var(--ease-luxury) 0.75s forwards;
+}
+
+@media (max-width: 1023px) {
+  .hero-reveal--active .hero-reveal__separator {
+    transform-origin: center center;
+  }
+}
+
+/* ─── Meta row — role + tagline ──────────────────────────── */
+.hero-reveal__meta {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.hero-reveal--active .hero-reveal__meta {
+  animation: hero-fade-rise 1.3s var(--ease-luxury) 0.95s forwards;
+}
+
+.hero-reveal__meta-tagline {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* ─── Typed roles — pure CSS cycle ──────────────────────── */
+.hero-reveal__roles {
+  position: relative;
+  height: 1.1rem;
+  min-width: 210px;
+  overflow: hidden;
+}
+
+.hero-reveal__role {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(var(--primary));
+  opacity: 0;
+  transform: translateY(10px);
+  white-space: nowrap;
+  animation-play-state: paused;
+}
+
+/* First role visible by default */
+.hero-reveal__role:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Start cycling animation when hero is active */
+.hero-reveal--active .hero-reveal__role {
+  animation: hero-role-cycle 8s ease-in-out infinite;
+  animation-play-state: running;
+}
+
+.hero-reveal--active .hero-reveal__role:nth-child(1) {
+  animation-delay: 0s;
+}
+.hero-reveal--active .hero-reveal__role:nth-child(2) {
+  animation-delay: 2.67s;
+}
+.hero-reveal--active .hero-reveal__role:nth-child(3) {
+  animation-delay: 5.34s;
+}
+
+@media (max-width: 1023px) {
+  .hero-reveal__roles {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .hero-reveal__role {
+    left: 0;
+    right: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-reveal__role {
+    text-align: left;
+  }
+}
+
+/*
+  Each role's 12s window:
+  0%   → hidden below (translateY +10px, opacity 0)
+  8%   → fully visible (translateY 0, opacity 1)  — ~1s
+  28%  → still visible                            — holds to ~3.4s
+  36%  → gone upward (translateY -10px, opacity 0) — exits by ~4.3s
+  37%  → snap back below, ready for next loop
+  100% → still hidden below
+*/
+@keyframes hero-role-cycle {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  6% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  42% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  43%,
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* ─── Subtitle — calm body copy ──────────────────────────── */
+.hero-reveal__subtitle {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.hero-reveal--active .hero-reveal__subtitle {
+  animation: hero-fade-rise 1.4s var(--ease-luxury) 1.2s forwards;
+}
+
+/* ─── CTA Buttons — stark & intentional ──────────────────── */
+.hero-reveal__actions {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.hero-reveal--active .hero-reveal__actions {
+  animation: hero-fade-rise 1.3s var(--ease-luxury) 1.5s forwards;
+}
+
+.hero-reveal__btn-primary {
+  background-color: rgb(var(--foreground));
+  color: rgb(var(--background));
+  border: 1px solid rgb(var(--foreground));
+}
+
+.hero-reveal__btn-secondary {
+  background: transparent;
+  color: rgb(var(--muted-foreground));
+  border: 1px solid rgb(var(--border));
+}
+
+.hero-reveal__btn-secondary:hover {
+  border-color: rgb(var(--foreground));
+  color: rgb(var(--foreground));
+}
+
+/* ─── Social icons — invisible until needed ──────────────── */
+.hero-reveal__social {
+  opacity: 0;
+}
+
+.hero-reveal--active .hero-reveal__social {
+  animation: hero-fade-rise 1.3s var(--ease-luxury) 1.8s forwards;
+}
+
+.hero-reveal__social-link {
+  color: rgba(var(--foreground), 0.3);
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.hero-reveal__social-link:hover,
+.hero-reveal__social-link:focus-visible {
+  border-color: rgb(var(--border));
+  color: rgb(var(--foreground));
+}
+
+/* ─── Avatar — gallery portrait reveal ───────────────────── */
+.hero-reveal__avatar {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+.hero-reveal--active .hero-reveal__avatar {
+  animation: hero-avatar-reveal 1.5s var(--ease-luxury) 0.3s forwards;
+}
+
+/* ─── Watermark — ink through paper ──────────────────────── */
+.hero-reveal__watermark {
+  z-index: 0;
+}
+
+.hero-reveal__watermark-text {
+  font-size: clamp(140px, 22vw, 280px);
+  font-weight: 900;
+  color: rgb(var(--foreground));
+  opacity: 0.06;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+/* ─── Portrait frame ─────────────────────────────────────── */
+.hero-reveal__image-ring {
+  border: 1px solid rgb(var(--border));
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Photo captions — corner labels ─────────────────────── */
+.hero-reveal__caption {
+  font-size: 10px;
+  color: rgb(var(--muted-foreground));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-reveal__caption--top {
+  transform: translate(0, -140%);
+}
+
+.hero-reveal__caption--bottom {
+  transform: translate(0, 140%);
+}
+
+.hero-reveal__caption-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  flex-shrink: 0;
+}
+
+/* ─── Scroll indicator — minimal signal ──────────────────── */
+.hero-reveal__scroll-indicator {
+  pointer-events: none;
+}
+
+.hero-reveal__scroll-hint {
+  border: 1px solid rgb(var(--border));
+  background: transparent;
+  opacity: 0;
+  animation: hero-scroll-bounce 2.5s ease-in-out infinite;
+}
+
+.hero-reveal--active .hero-reveal__scroll-hint {
+  opacity: 1;
+}
+
+.hero-reveal__scroll-wire {
+  width: 1px;
+  height: 24px;
+  margin-top: 8px;
+  background: rgb(var(--border));
+}
+
+/* ─── Keyframes ──────────────────────────────────────────── */
+@keyframes hero-clip-reveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes hero-avatar-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 1024px) {
+  @keyframes hero-avatar-reveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.91);
+    }
+    40% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+      transform: scale(0.97);
+    }
+  }
+}
+
+@keyframes hero-fade-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-line-grow {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  20% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* ─── Screen-reader only ─────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

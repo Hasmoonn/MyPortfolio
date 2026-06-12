@@ -161,23 +161,38 @@ export const education = [
   {
     degree: "B.Sc(Hons) in Software Engineering",
     school: "Sabaragamuwa University of Sri Lanka",
-    period: "2021 - Present",
+    period: "2023 - Present",
     description: "Specialized in Web Development and Machine Learning. CGPA: 3.72/4.0",
-    achievements: ["Dean's List", "Research Assistant"]
+    achievements: [
+      "CGPA 3.72",
+      "Web Development",
+      "Machine Learning",
+      "Software Projects"
+    ]
   },
   {
     degree: "Diploma in Computer Science",
     school: "KDMC Nenasala - Kalmunai",
     period: "2021 - 2022",
     description: "Focused on full-stack development and software architecture.",
-    achievements: []
+    achievements: [
+      "Programming",
+      "Databases",
+      "Full-Stack Basics",
+      "Software Design"
+    ]
   },
   {
     degree: "G.C.E in Advanced Level",
     school: "KM/ Zahira College, Kalmunai",
     period: "2018 - 2020",
-    description: "Specializing in the Physical Science stream. I achieved A, B and C, obtaining a Z-Score of 1.472. This strong academic foundation in mathematics and science has greatly supported my journey in software engineering and problem-solving.",
-    achievements: ["Medal", "Prices"]
+    description: "Specializing in the Physical Science stream.",
+    achievements: [
+      "A, B, C Results",
+      "Z-Score 1.472",
+      "Physical Science",
+      "Math Foundation"
+    ]
   },
 ];
 

@@ -107,11 +107,12 @@
     padding: 0;
     box-sizing: border-box;
     @apply border-[rgb(var(--border))];
+    scrollbar-width: none;
   }
 
   body {
     @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
-    background: linear-gradient(135deg, rgb(var(--background)) 0%, rgb(var(--muted)) 100%);
+    /* background: linear-gradient(135deg, rgb(var(--background)) 0%, rgb(var(--muted)) 100%); */
     font-family: "Outfit", sans-serif;
     overflow-x: hidden;
   }
@@ -306,5 +307,22 @@
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+
+  /* Counter Color States */
+  .counter--counting {
+    color: rgb(var(--primary));
+    transition: color 0.6s ease;
+  }
+
+  .counter--complete {
+    color: rgb(var(--foreground));
+    transition: color 0.6s ease;
+  }
   
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
 }
