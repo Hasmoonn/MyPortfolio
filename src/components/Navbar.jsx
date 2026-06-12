@@ -1,77 +1,152 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
-import { Menu, X } from 'lucide-react';
-
+import '../styles/navbar.css'
 
 const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
-  { name: "Education", href: "#education" },
-  { name: "Contact", href: "#contact" }
-];
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Projects', href: '#projects' },
+  { name: 'Education', href: '#education' },
+  { name: 'Contact', href: '#contact' },
+]
 
+const SCROLL_THRESHOLD = 60
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('#home')
+
+  const progressRef = useRef(null)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+      const scrollY = window.scrollY
+      setIsScrolled((prev) => {
+        const scrolled = scrollY > SCROLL_THRESHOLD
+        return scrolled === prev ? prev : scrolled
+      })
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight
+      const progress =
+        docHeight > 0 ? Math.min(100, (scrollY / docHeight) * 100) : 0
+
+      if (progressRef.current) {
+        progressRef.current.style.width = `${progress}%`
+      }
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const sections = navItems
+      .map((item) => document.getElementById(item.href.slice(1)))
+      .filter(Boolean)
+
+    if (sections.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+        if (visible.length > 0) {
+          setActiveSection(`#${visible[0].target.id}`)
+        }
+      },
+      {
+        rootMargin: '-40% 0px -40% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <nav className="fixed top-2 left-1 right-1 lg:top-3 lg:left-28 lg:right-28 z-50 transition-all duration-300">
-      <div className="mx-auto max-w-7xl px-4">
-        <div className={`px-1 rounded-md sm:px-6 flex items-center justify-between h-16 transition-all duration-300 ${ isScrolled ? "glass-card sm:rounded-full backdrop-blur-md" : "bg-transparent" }`}>
-          <div className="flex items-center">
-            <span className="text-2xl font-bold gradient-text italic">
-              It's HasMoon
-            </span>
-          </div>
+    <>
+      <div
+        ref={progressRef}
+        className="navbar__progress"
+        aria-hidden="true"
+      />
 
-          <div className="hidden md:flex items-center gap-x-8">
-            {navItems.map((item) => (
-              <a key={item.name} href={item.href} className="text-[rgb(var(--foreground))] hover:gradient-text transition-colors duration-200 font-medium relative group" >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 gradient-primary transition-all duration-300 group-hover:w-full"></span>
+      <nav
+        className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}
+        aria-label="Main navigation"
+      >
+        <div className="mx-auto h-14 max-w-7xl px-4 md:px-6">
+          <div className="navbar__inner relative flex h-14 items-center justify-between md:grid md:grid-cols-3">
+            <div className="flex items-center">
+              <a href="/" className="navbar__logo">
+                <span className="navbar__logo-text">HASMOON_DEV</span>
               </a>
-            ))}
-          </div>
+            </div>
 
-          <div className="hidden md:flex items-center">
-            <ThemeToggle />
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-x-2">
-            <ThemeToggle />
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="hover:bg-[rgb(var(--muted-foreground),0.1)] hover:text-[rgb(var(--primary))] p-2 font-medium glass-card justify-center items-center flex hover:scale-110 transition-all duration-300 rounded-lg"
-            >
-              {isMobileMenuOpen ? <X className="h-[1rem] w-[1rem] transition-all duration-300" /> : <Menu className="h-[1rem] w-[1rem] transition-all duration-300" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden glass-card mt-2 rounded-lg p-4 animate-fade-in">
-            <div className="flex flex-col gap-y-4">
+            <div className="hidden items-center justify-center gap-x-8 md:flex">
               {navItems.map((item) => (
-                <a key={item.name} href={item.href} className="text-[rgb(var(--muted-foreground))] hover:text-[rgb(var(--foreground))] transition-colors duration-200 py-2" onClick={() => setIsMobileMenuOpen(false)} >
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`navbar__link ${
+                    activeSection === item.href ? 'navbar__link--active' : ''
+                  }`}
+                >
                   {item.name}
+                  {activeSection === item.href && (
+                    <span
+                      className="navbar__link-indicator"
+                      aria-hidden="true"
+                    />
+                  )}
                 </a>
               ))}
             </div>
+
+            <div className="flex items-center justify-end gap-2">
+              <ThemeToggle />
+              <button
+                type="button"
+                className="navbar__menu-btn md:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-expanded={isMobileMenuOpen}
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Menu className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      </nav>
+
+      {isMobileMenuOpen && (
+        <div className="navbar__mobile-panel md:hidden">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className="navbar__mobile-link"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      )}
+    </>
   )
 }
 

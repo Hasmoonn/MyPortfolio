@@ -1,0 +1,200 @@
+/* ==============================================
+   Section Transition - Cinematic Scroll Between
+   About and Projects Sections
+   ============================================== */
+
+.sect-transition {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: rgb(var(--background));
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgb(var(--border));
+}
+
+/* ==================== LAYER 1 ==================== */
+/* Giant Chapter Number */
+
+.sect-transition__number-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.sect-transition__number {
+  font-size: clamp(120px, 25vw, 220px);
+  font-weight: 900;
+  line-height: 1;
+  -webkit-text-stroke: 1px rgb(var(--primary));
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+  transform: translateY(40px);
+  letter-spacing: -0.02em;
+  will-change: opacity, transform;
+}
+
+/* ==================== LAYER 2 ==================== */
+/* Horizontal Line & Center Square */
+
+.sect-transition__line-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.sect-transition__line {
+  position: absolute;
+  height: 1px;
+  background: rgb(var(--border));
+  will-change: width, opacity;
+}
+
+.sect-transition__line--left {
+  right: 50%;
+  width: 0;
+  margin-right: 0;
+  transform-origin: right center;
+}
+
+.sect-transition__line--right {
+  left: 50%;
+  width: 0;
+  margin-left: 0;
+  transform-origin: left center;
+}
+
+.sect-transition__center-square {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgb(var(--border));
+  border-radius: 0.25rem;
+  background: rgb(var(--background));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.sect-transition__arrow-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: rgb(var(--muted-foreground));
+  stroke-width: 1.5;
+}
+
+/* ==================== LAYER 3 ==================== */
+/* Text Labels */
+
+.sect-transition__labels {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+.sect-transition__label {
+  position: absolute;
+  top: 50%;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgb(var(--muted-foreground));
+  white-space: nowrap;
+  will-change: opacity, transform;
+  opacity: 0;
+}
+
+.sect-transition__label--left {
+  left: 3rem;
+}
+
+.sect-transition__label--right {
+  right: 3rem;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1024px) {
+  .sect-transition__label--left {
+    left: 1.5rem;
+  }
+
+  .sect-transition__label--right {
+    right: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sect-transition__number {
+    font-size: clamp(80px, 18vw, 140px);
+  }
+
+  .sect-transition__label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+  }
+
+  .sect-transition__label--left {
+    left: 1rem;
+  }
+
+  .sect-transition__label--right {
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sect-transition__number {
+    font-size: clamp(60px, 15vw, 100px);
+  }
+
+  .sect-transition__center-square {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sect-transition__arrow-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .sect-transition__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+  }
+
+  .sect-transition__label--left {
+    left: 0.75rem;
+  }
+
+  .sect-transition__label--right {
+    right: 0.75rem;
+  }
+}
