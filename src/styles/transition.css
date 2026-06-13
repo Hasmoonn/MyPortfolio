@@ -31,7 +31,7 @@
   font-size: clamp(120px, 25vw, 220px);
   font-weight: 900;
   line-height: 1;
-  -webkit-text-stroke: 1px rgb(var(--primary));
+  -webkit-text-stroke: 2px rgb(var(--primary));
   -webkit-text-fill-color: transparent;
   color: transparent;
   opacity: 0;

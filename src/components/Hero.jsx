@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import me from '../assets/me.jpg'
+import me from '../assets/me.webp'
 import '../styles/hero.css'
 
 const SOCIAL_LINKS = [

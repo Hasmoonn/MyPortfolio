@@ -102,6 +102,10 @@
 
 
 @layer base {
+  html {
+    scroll-behavior: smooth !important;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -112,16 +116,11 @@
 
   body {
     @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))];
-    /* background: linear-gradient(135deg, rgb(var(--background)) 0%, rgb(var(--muted)) 100%); */
     font-family: "Outfit", sans-serif;
     overflow-x: hidden;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth; 
   }
 }
-
 
 
 @layer utilities {
@@ -317,12 +316,5 @@
   .counter--complete {
     color: rgb(var(--foreground));
     transition: color 0.6s ease;
-  }
-  
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto !important;
-  }
+  } 
 }

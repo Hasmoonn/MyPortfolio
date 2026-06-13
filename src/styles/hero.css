@@ -46,7 +46,7 @@
 /* ─── Dot grid — faint architectural texture ─────────────── */
 .hero-reveal__grid {
   background-image: radial-gradient(
-    rgba(var(--primary), 0.2) 1px,
+    rgba(var(--primary), 0.3) 1px,
     transparent 2px
   );
   background-size: 28px 28px;
