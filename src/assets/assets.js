@@ -1,10 +1,10 @@
-import parkswift from '../assets/projectImages/parkswift.png'
-import mernAuth from '../assets/projectImages/mernAuth.png'
-import eventBuddy from '../assets/projectImages/eventBuddy.png'
-import mobileApp from '../assets/projectImages/mobileApp.png'
-import inkspireAI from '../assets/projectImages/inkspireAI.png'
-import snapBlog from '../assets/projectImages/snapBlog.png'
-import luxivo from '../assets/projectImages/luxivo.png'
+import parkswift from '../assets/projectImages/parkswift.webp'
+import mernAuth from '../assets/projectImages/mernAuth.webp'
+import eventBuddy from '../assets/projectImages/eventBuddy.webp'
+import mobileApp from '../assets/projectImages/mobileApp.webp'
+import inkspireAI from '../assets/projectImages/inkspireAI.webp'
+import snapBlog from '../assets/projectImages/snapBlog.webp'
+import luxivo from '../assets/projectImages/luxivo.webp'
 
 // ------------- skills --------------
 import {Code, CodeSquare, Database, Palette} from 'lucide-react'
