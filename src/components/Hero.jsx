@@ -180,7 +180,7 @@ const Hero = ({
               [ 01 ]
             </p>
 
-            <h1 className="hero-reveal__headline mb-8 text-6xl font-black leading-[0.95] tracking-tighter text-[rgb(var(--foreground))] lg:text-8xl xl:text-9xl">
+            <h1 className="hero-reveal__headline mb-8 text-6xl font-black leading-[0.95] tracking-normal text-[rgb(var(--foreground))] lg:text-8xl xl:text-9xl">
               <span
                 className="hero-reveal__word block"
               >
