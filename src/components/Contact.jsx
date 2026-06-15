@@ -1,436 +1,328 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Send, ArrowRight, Github, Linkedin, Facebook } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Send, MapPin, Mail, Phone, ArrowUpRight, Minus } from 'lucide-react'
 import emailjs from 'emailjs-com'
 import { toast } from 'react-toastify'
 import '../styles/contact.css'
 
-const CONTACT_INFO = [
-  {
-    index: '01',
-    type: 'Email',
-    value: 'mohamedhasmoon175@gmail.com',
-    href: 'mailto:mohamedhasmoon175@gmail.com',
-  },
-  {
-    index: '02',
-    type: 'Phone',
-    value: '+94 76 966 0195',
-    href: 'tel:+94769660195',
-  },
-  {
-    index: '03',
-    type: 'Location',
-    value: 'No.538, Lotus road, Sainthamaruthu 14, Sri Lanka',
-    href: null,
-  },
+const CONTACT_LINKS = [
+  { type: 'Email', value: 'mohamedhasmoon175@gmail.com', href: 'mailto:mohamedhasmoon175@gmail.com', icon: Mail },
+  { type: 'Phone', value: '+94 76 966 0195', href: 'tel:+94769660195', icon: Phone },
+  { type: 'Location', value: 'Sainthamaruthu, Sri Lanka', href: null, icon: MapPin },
+]
+
+const FIELDS = [
+  { id: 'name', label: 'Name', type: 'text', placeholder: 'Your full name', half: true, autoComplete: 'name' },
+  { id: 'email', label: 'Email', type: 'email', placeholder: 'you@example.com', half: true, autoComplete: 'email' },
+  { id: 'subject', label: 'Subject', type: 'text', placeholder: 'What is this regarding?', half: false, autoComplete: 'off' },
+  { id: 'message', label: 'Message', type: 'textarea', placeholder: 'Tell me everything...', half: false, autoComplete: 'off' },
 ]
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
-  const [isSending, setIsSending] = useState(false)
-  const [isSent, setIsSent] = useState(false)
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [focused, setFocused] = useState(null)
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 })
 
-  const headerRef = useRef(null)
-  const leftPanelRef = useRef(null)
-  const rightPanelRef = useRef(null)
-  const bottomBarRef = useRef(null)
-  const headerAnimatedRef = useRef(false)
-  const lastScrollY = useRef(window.scrollY)
+  // Animation states
+  const [heroVisible, setHeroVisible] = useState(false)
+  const [heroExit, setHeroExit] = useState(false)
+  const [panelVisible, setPanelVisible] = useState(false)
+  const [panelExit, setPanelExit] = useState(false)
 
-  const [headerStage, setHeaderStage] = useState({
-    number: false,
-    heading: false,
-    separator: false,
-    text: false,
-  })
-  const [leftVisible, setLeftVisible] = useState(false)
-  const [leftExiting, setLeftExiting] = useState(false)
-  const [rightVisible, setRightVisible] = useState(false)
-  const [rightExiting, setRightExiting] = useState(false)
-  const [bottomVisible, setBottomVisible] = useState(false)
-  const [bottomExiting, setBottomExiting] = useState(false)
-  const [headerExiting, setHeaderExiting] = useState(false)
+  const sectionRef = useRef(null)
+  const heroRef = useRef(null)
+  const panelRef = useRef(null)
+  const lastScroll = useRef(window.scrollY)
 
-  // Track scroll direction
+  // Scroll tracker
   useEffect(() => {
-    const handleScroll = () => {
-      lastScrollY.current = window.scrollY
+    const fn = () => { lastScroll.current = window.scrollY }
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
+  }, [])
+
+  // Mouse parallax on hero
+  const handleMouse = useCallback((e) => {
+    const rect = sectionRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setMousePos({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    })
+  }, [])
+
+  // Observers
+  useEffect(() => {
+    const makeObs = (ref, setVisible, setExit) => {
+      const el = ref.current
+      if (!el) return null
+      const obs = new IntersectionObserver(([entry]) => {
+        const down = window.scrollY >= lastScroll.current
+        if (entry.isIntersecting) { setVisible(true); setExit(false) }
+        else if (!down) { setExit(true); setVisible(false) }
+      }, { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' })
+      obs.observe(el)
+      return obs
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+
+    const obs1 = makeObs(heroRef, setHeroVisible, setHeroExit)
+    const obs2 = makeObs(panelRef, setPanelVisible, setPanelExit)
+
+    return () => { obs1?.disconnect(); obs2?.disconnect(); }
   }, [])
 
-  // Zone 1 — Header animation
-  useEffect(() => {
-    const el = headerRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-
-        if (entry.isIntersecting) {
-          setHeaderExiting(false)
-          if (!headerAnimatedRef.current) {
-            headerAnimatedRef.current = true
-            setTimeout(() => setHeaderStage((p) => ({ ...p, number: true })), 0)
-            setTimeout(() => setHeaderStage((p) => ({ ...p, heading: true })), 150)
-            setTimeout(() => setHeaderStage((p) => ({ ...p, separator: true })), 200)
-            setTimeout(() => setHeaderStage((p) => ({ ...p, text: true })), 300)
-          }
-        } else if (!scrollingDown) {
-          setHeaderExiting(true)
-        }
-      },
-      { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Zone 2 — Left panel
-  useEffect(() => {
-    const el = leftPanelRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setLeftVisible(true)
-          setLeftExiting(false)
-        } else if (!scrollingDown) {
-          setLeftExiting(true)
-          setLeftVisible(false)
-        }
-      },
-      { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Zone 2 — Right panel
-  useEffect(() => {
-    const el = rightPanelRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setRightVisible(true)
-          setRightExiting(false)
-        } else if (!scrollingDown) {
-          setRightExiting(true)
-          setRightVisible(false)
-        }
-      },
-      { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Zone 3 — Bottom bar
-  useEffect(() => {
-    const el = bottomBarRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setBottomVisible(true)
-          setBottomExiting(false)
-        } else if (!scrollingDown) {
-          setBottomExiting(true)
-          setBottomVisible(false)
-        }
-      },
-      { threshold: 0.15, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
+  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsSending(true)
-
+    setSending(true)
     try {
       await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-        },
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
+        { from_name: form.name, from_email: form.email, subject: form.subject, message: form.message },
+        import.meta.env.VITE_USER_ID,
       )
-
+      if (import.meta.env.VITE_AUTOREPLY_TEMPLATE_ID) {
+        try {
+          await emailjs.send(
+            import.meta.env.VITE_SERVICE_ID,
+            import.meta.env.VITE_AUTOREPLY_TEMPLATE_ID,
+            { to_name: form.name, to_email: form.email, subject: form.subject },
+            import.meta.env.VITE_USER_ID,
+          )
+        } catch (err) {
+          toast.warn('Message sent, but failed to send auto-reply.')
+          console.error('Auto-reply error:', err)
+        }
+      }
       toast.success('Message sent successfully!')
-      setIsSent(true)
-      setFormData({ name: '', email: '', subject: '', message: '' })
-
-      setTimeout(() => setIsSent(false), 2000)
-    } catch (error) {
-      console.error('EmailJS Error:', error)
-      toast.error('Failed to send message. Please try again.')
+      setSent(true)
+      setForm({ name: '', email: '', subject: '', message: '' })
+      setTimeout(() => setSent(false), 2500)
+    } catch (err) {
+      console.error(err)
+      toast.error('Failed to send. Try again.')
     } finally {
-      setIsSending(false)
+      setSending(false)
     }
   }
 
-  const getButtonContent = () => {
-    if (isSent) {
-      return (
-        <>
-          <span className="contact__btn-check" aria-hidden="true">✓</span>
-          Message Sent
-        </>
-      )
-    }
-    if (isSending) {
-      return (
-        <>
-          <span className="contact__btn-spinner" aria-hidden="true" />
-          Sending...
-        </>
-      )
-    }
-    return (
-      <>
-        <Send className="contact__btn-icon" aria-hidden="true" />
-        Send Message
-      </>
-    )
-  }
+  const mx = (mousePos.x - 0.5) * 20
+  const my = (mousePos.y - 0.5) * 20
 
   return (
-    <section id="contact" className="contact">
-      {/* ==================== ZONE 1 — HEADER ==================== */}
-      <div ref={headerRef} className="contact__zone-1">
-        <div className="contact__zone-1-container">
-          <div className="contact__zone-1-left">
-            <div
-              className={`contact__large-number ${
-                headerStage.number && !headerExiting
-                  ? 'contact__large-number--visible'
-                  : ''
-              } ${headerExiting ? 'contact__large-number--exiting' : ''}`}
-            >
-              05
-            </div>
-            <div className="contact__chapter-marker">[ 05 ]</div>
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="ct"
+      onMouseMove={handleMouse}
+    >
+      {/* ====== ZONE A — CINEMATIC HERO ====== */}
+      <div
+        ref={heroRef}
+        className={`ct__hero ${heroVisible ? 'ct__hero--in' : ''} ${heroExit ? 'ct__hero--out' : ''}`}
+      >
+        {/* Floating accent lines */}
+        <div className="ct__hero-lines" aria-hidden="true">
+          <div
+            className="ct__hero-line ct__hero-line--1"
+            style={{ transform: `translate(${mx * 0.3}px, ${my * 0.3}px)` }}
+          />
+          <div
+            className="ct__hero-line ct__hero-line--2"
+            style={{ transform: `translate(${mx * -0.2}px, ${my * -0.2}px)` }}
+          />
+          <div
+            className="ct__hero-line ct__hero-line--3"
+            style={{ transform: `translate(${mx * 0.15}px, ${my * -0.15}px)` }}
+          />
+        </div>
+
+        {/* Chapter number — cinematic watermark */}
+        <div
+          className="ct__hero-watermark"
+          style={{ transform: `translate(${mx * 0.5}px, ${my * 0.5}px)` }}
+          aria-hidden="true"
+        >
+          05
+        </div>
+
+        {/* Main heading stack */}
+        <div className="ct__hero-content">
+          <div className="ct__hero-eyebrow">
+            <Minus className="ct__hero-dash" />
+            <span>Get in Touch</span>
           </div>
 
-          <div className="contact__zone-1-right">
-            <h1
-              className={`contact__section-heading ${
-                headerStage.heading && !headerExiting
-                  ? 'contact__section-heading--visible'
-                  : ''
-              } ${headerExiting ? 'contact__section-heading--exiting' : ''}`}
-            >
-              Contact
-            </h1>
-            <div
-              className={`contact__heading-separator ${
-                headerStage.separator && !headerExiting
-                  ? 'contact__heading-separator--visible'
-                  : ''
-              } ${headerExiting ? 'contact__heading-separator--exiting' : ''}`}
-            />
-            <p
-              className={`contact__intro-text ${
-                headerStage.text && !headerExiting
-                  ? 'contact__intro-text--visible'
-                  : ''
-              } ${headerExiting ? 'contact__intro-text--exiting' : ''}`}
-            >
-              Available for freelance work, full-time opportunities, and
-              technical collaborations.
-            </p>
+          <h1 className="ct__hero-title">
+            <span className="ct__hero-title-line">
+              <span className="ct__hero-title-word">Let's</span>
+            </span>
+            <span className="ct__hero-title-line">
+              <span className="ct__hero-title-word ct__hero-title-word--accent">Create</span>
+            </span>
+            <span className="ct__hero-title-line">
+              <span className="ct__hero-title-word">Together.</span>
+            </span>
+          </h1>
+
+          <p className="ct__hero-desc">
+            Available for freelance, full-time, and collaborations.
+            <br />
+            Let's turn your vision into reality.
+          </p>
+
+          {/* Status pill */}
+          <div className="ct__hero-status">
+            <span className="ct__hero-status-dot" />
+            <span className="ct__hero-status-text">Available Now</span>
           </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="ct__hero-scroll" aria-hidden="true">
+          <div className="ct__hero-scroll-line" />
+          <span className="ct__hero-scroll-text">Scroll</span>
         </div>
       </div>
 
-      {/* ==================== ZONE 2 — MAIN STAGE ==================== */}
-      <div className="contact__zone-2">
-        {/* Left Panel — Contact Information */}
-        <div
-          ref={leftPanelRef}
-          className={`contact__left-panel ${
-            leftVisible ? 'contact__left-panel--visible' : ''
-          } ${leftExiting ? 'contact__left-panel--exiting' : ''}`}
-        >
-          {/* Section A — Identity Block */}
-          <div className="contact__info-section">
-            <div className="contact__info-label">— Direct Contact</div>
-            <div className="contact__info-divider" />
+      {/* ====== ZONE B — FORM + INFO PANEL ====== */}
+      <div
+        ref={panelRef}
+        className={`ct__panel ${panelVisible ? 'ct__panel--in' : ''} ${panelExit ? 'ct__panel--out' : ''}`}
+      >
+        {/* Left — Form */}
+        <div className="ct__form-side">
+          <div className="ct__form-head">
+            <span className="ct__form-head-num">01</span>
+            <span className="ct__form-head-label">Send a Message</span>
+          </div>
 
-            {CONTACT_INFO.map((item, idx) => (
-              <div
-                key={item.index}
-                className="contact__info-row"
-                style={{ transitionDelay: `${idx * 60}ms` }}
-              >
-                <span className="contact__info-index">{item.index}</span>
-                <div className="contact__info-details">
-                  <span className="contact__info-type">{item.type}</span>
-                  <span className="contact__info-value">{item.value}</span>
+          <form onSubmit={handleSubmit} className="ct__form">
+            <div className="ct__form-grid">
+              {FIELDS.map((f, i) => (
+                <div
+                  key={f.id}
+                  className={`ct__field ${f.half ? 'ct__field--half' : ''} ${
+                    focused === f.id ? 'ct__field--focus' : ''
+                  } ${form[f.id] ? 'ct__field--filled' : ''}`}
+                  style={{ '--field-i': i }}
+                >
+                  <label htmlFor={`ct-${f.id}`} className="ct__field-label">
+                    {f.label}
+                  </label>
+
+                  {f.type === 'textarea' ? (
+                    <textarea
+                      id={`ct-${f.id}`}
+                      name={f.id}
+                      value={form[f.id]}
+                      onChange={handleChange}
+                      onFocus={() => setFocused(f.id)}
+                      onBlur={() => setFocused(null)}
+                      placeholder={f.placeholder}
+                      required
+                      rows={5}
+                      className="ct__input ct__input--textarea"
+                    />
+                  ) : (
+                    <input
+                      id={`ct-${f.id}`}
+                      type={f.type}
+                      name={f.id}
+                      value={form[f.id]}
+                      onChange={handleChange}
+                      onFocus={() => setFocused(f.id)}
+                      onBlur={() => setFocused(null)}
+                      placeholder={f.placeholder}
+                      required
+                      className="ct__input"
+                      autoComplete={f.autoComplete}
+                    />
+                  )}
+
+                  <div className="ct__field-bar" />
                 </div>
-                {item.href && (
-                  <a
-                    href={item.href}
-                    className="contact__info-arrow"
-                    aria-label={`${item.type} link`}
-                  >
-                    <ArrowRight className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Section B — Availability */}
-          <div className="contact__status-section">
-            <div className="contact__info-label">— Status</div>
-            <div className="contact__status-row">
-              <span className="contact__status-dot" aria-hidden="true" />
-              <span className="contact__status-text">
-                Available for new projects
+            <button
+              type="submit"
+              disabled={sending}
+              className={`ct__submit ${sent ? 'ct__submit--sent' : ''}`}
+            >
+              <span className="ct__submit-bg" />
+              <span className="ct__submit-content">
+                {sent ? (
+                  <>
+                    <span className="ct__submit-check">✓</span>
+                    <span>Sent Successfully</span>
+                  </>
+                ) : sending ? (
+                  <>
+                    <span className="ct__submit-spinner" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="ct__submit-icon" />
+                    <span>Send Message</span>
+                    <ArrowUpRight className="ct__submit-arrow" />
+                  </>
+                )}
               </span>
-            </div>
-            <div className="contact__status-note">
-              Response within 24 hours
-            </div>
-          </div>
+            </button>
+          </form>
         </div>
 
-        {/* Right Panel — Contact Form */}
-        <div
-          ref={rightPanelRef}
-          className={`contact__right-panel ${
-            rightVisible ? 'contact__right-panel--visible' : ''
-          } ${rightExiting ? 'contact__right-panel--exiting' : ''}`}
-        >
-          <div className="contact__form-label">— Send a Message</div>
-          <div className="contact__form-divider" />
+        {/* Right — Info */}
+        <div className="ct__info-side">
+          <div className="ct__info-head">
+            <span className="ct__info-head-num">02</span>
+            <span className="ct__info-head-label">Contact Details</span>
+          </div>
 
-          <form onSubmit={handleSubmit} className="contact__form">
-            <div className="contact__form-row-double">
-              <div
-                className="contact__field"
-                style={{ transitionDelay: '0ms' }}
-              >
-                <label htmlFor="contact-name" className="contact__field-label">
-                  01 — Your Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="John Doe"
-                  required
-                  className="contact__field-input"
-                  autoComplete="name"
-                />
-              </div>
+          <div className="ct__info-channels">
+            {CONTACT_LINKS.map((link, i) => {
+              const Icon = link.icon
+              const Tag = link.href ? 'a' : 'div'
+              return (
+                <Tag
+                  key={i}
+                  {...(link.href ? { href: link.href } : {})}
+                  className={`ct__channel ${link.href ? 'ct__channel--link' : ''}`}
+                  style={{ '--ch-i': i }}
+                >
+                  <div className="ct__channel-icon">
+                    <Icon />
+                  </div>
+                  <div className="ct__channel-text">
+                    <span className="ct__channel-type">{link.type}</span>
+                    <span className="ct__channel-val">{link.value}</span>
+                  </div>
+                  {link.href && <ArrowUpRight className="ct__channel-arr" />}
+                </Tag>
+              )
+            })}
+          </div>
 
-              <div
-                className="contact__field"
-                style={{ transitionDelay: '60ms' }}
-              >
-                <label htmlFor="contact-email" className="contact__field-label">
-                  02 — Email Address
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="john@example.com"
-                  required
-                  className="contact__field-input"
-                  autoComplete="email"
-                />
-              </div>
+          {/* Decorative quote block */}
+          <div className="ct__quote">
+            <div className="ct__quote-mark" aria-hidden="true">"</div>
+            <p className="ct__quote-text">
+              Great things are built through great collaboration. Every project starts with a conversation.
+            </p>
+          </div>
+
+          {/* Response time */}
+          <div className="ct__response">
+            <div className="ct__response-bar">
+              <div className="ct__response-fill" />
             </div>
-
-            <div
-              className="contact__field"
-              style={{ transitionDelay: '120ms' }}
-            >
-              <label htmlFor="contact-subject" className="contact__field-label">
-                03 — Subject
-              </label>
-              <input
-                id="contact-subject"
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="Project inquiry"
-                required
-                className="contact__field-input"
-                autoComplete="off"
-              />
-            </div>
-
-            <div
-              className="contact__field"
-              style={{ transitionDelay: '180ms' }}
-            >
-              <label htmlFor="contact-message" className="contact__field-label">
-                04 — Message
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Tell me about your project..."
-                required
-                className="contact__field-input contact__field-textarea"
-                rows={5}
-              />
-            </div>
-
-            <div
-              className="contact__field contact__field--submit"
-              style={{ transitionDelay: '240ms' }}
-            >
-              <button
-                type="submit"
-                disabled={isSending}
-                className={`contact__submit-btn ${
-                  isSent ? 'contact__submit-btn--sent' : ''
-                }`}
-              >
-                {getButtonContent()}
-              </button>
-            </div>
-          </form>
+            <span className="ct__response-text">Avg. response: &lt; 24 hours</span>
+          </div>
         </div>
       </div>
     </section>

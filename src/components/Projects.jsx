@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronDown, ChevronUp, Github, ExternalLink } from 'lucide-react'
 import { projects } from '../assets/assets.js'
 import '../styles/projects.css'
@@ -77,19 +77,8 @@ const Projects = () => {
   return (
     <section id="projects" className="projects">
       <div ref={headerRef} className="projects__zone-1">
-        <div className="projects__zone-1-container">
+        <div className="projects__zone-1-container">        
           <div className="projects__zone-1-left">
-            <div
-              className={`projects__large-number ${
-                headerAnimStage.number ? 'projects__large-number--visible' : ''
-              }`}
-            >
-              03
-            </div>
-            <div className="projects__chapter-marker">[ 03 ]</div>
-          </div>
-
-          <div className="projects__zone-1-right">
             <h1
               className={`projects__section-heading ${
                 headerAnimStage.heading ? 'projects__section-heading--visible' : ''
@@ -117,6 +106,17 @@ const Projects = () => {
             >
               {String(projects.length).padStart(2, '0')} Projects
             </div>
+          </div>
+
+          <div className="projects__zone-1-right">
+            <div
+              className={`projects__large-number ${
+                headerAnimStage.number ? 'projects__large-number--visible' : ''
+              }`}
+            >
+              03
+            </div>
+            <div className="projects__chapter-marker">[ 03 ]</div>
           </div>
         </div>
       </div>

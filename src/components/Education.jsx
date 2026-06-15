@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { ChevronDown, ChevronUp, Award, ExternalLink } from 'lucide-react'
 import { certifications, education } from '../assets/assets.js'
 import '../styles/education.css'
 
@@ -17,6 +17,7 @@ const Education = () => {
   const [visibleEduRecords, setVisibleEduRecords] = useState(new Set())
   const [visibleCertRows, setVisibleCertRows] = useState(new Set())
   const [exitingCertRows, setExitingCertRows] = useState(new Set())
+  const [hoveredCert, setHoveredCert] = useState(null)
 
   const headerRef = useRef(null)
   const headerAnimatedRef = useRef(false)
@@ -28,7 +29,6 @@ const Education = () => {
     ? certifications
     : certifications.slice(0, CERTS_INITIAL)
 
-  // Track scroll direction
   useEffect(() => {
     const handleScroll = () => {
       lastScrollY.current = window.scrollY
@@ -37,7 +37,6 @@ const Education = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Zone 1 — Header
   useEffect(() => {
     const el = headerRef.current
     if (!el) return
@@ -49,22 +48,10 @@ const Education = () => {
           setHeaderExiting(false)
           if (!headerAnimatedRef.current) {
             headerAnimatedRef.current = true
-            setTimeout(
-              () => setHeaderStage((p) => ({ ...p, number: true })),
-              0,
-            )
-            setTimeout(
-              () => setHeaderStage((p) => ({ ...p, heading: true })),
-              150,
-            )
-            setTimeout(
-              () => setHeaderStage((p) => ({ ...p, separator: true })),
-              200,
-            )
-            setTimeout(
-              () => setHeaderStage((p) => ({ ...p, text: true })),
-              300,
-            )
+            setTimeout(() => setHeaderStage((p) => ({ ...p, number: true })), 0)
+            setTimeout(() => setHeaderStage((p) => ({ ...p, heading: true })), 150)
+            setTimeout(() => setHeaderStage((p) => ({ ...p, separator: true })), 200)
+            setTimeout(() => setHeaderStage((p) => ({ ...p, text: true })), 300)
           }
         } else if (!scrollingDown) {
           setHeaderExiting(true)
@@ -77,7 +64,6 @@ const Education = () => {
     return () => observer.disconnect()
   }, [])
 
-  // Zone 2 — Education records
   useEffect(() => {
     const observers = []
     const refs = eduRecordRefs.current.filter(Boolean)
@@ -98,7 +84,6 @@ const Education = () => {
     return () => observers.forEach((o) => o.disconnect())
   }, [])
 
-  // Zone 3 — Cert rows
   useEffect(() => {
     const observers = []
     const timer = setTimeout(() => {
@@ -193,13 +178,10 @@ const Education = () => {
 
       {/* ==================== ZONE 2 — ACADEMIC TIMELINE ==================== */}
       <div className="edu__zone-2">
-
-        {/* Timeline spine */}
         <div className="edu__spine" aria-hidden="true">
           <div className="edu__spine-line" />
         </div>
 
-        {/* Records */}
         <div className="edu__records">
           {education.map((item, index) => (
             <div
@@ -211,7 +193,6 @@ const Education = () => {
                 visibleEduRecords.has(index) ? 'edu__record--visible' : ''
               }`}
             >
-              {/* Spine marker */}
               <div
                 className={`edu__spine-marker ${
                   visibleEduRecords.has(index)
@@ -222,23 +203,18 @@ const Education = () => {
               />
 
               <div className="edu__record-inner">
-
-                {/* Date column */}
                 <div className="edu__record-date">
                   <span className="edu__date-text">{item.period}</span>
                 </div>
 
-                {/* Degree column */}
                 <div className="edu__record-degree">
                   <span className="edu__degree-label">— Academic Degree</span>
                   <h3 className="edu__degree-title">{item.degree}</h3>
-                  {/* ✅ uses item.school — correct field name */}
                   <p className="edu__institution">{item.school}</p>
                   <div className="edu__degree-rule" />
                   <p className="edu__degree-description">{item.description}</p>
                 </div>
 
-                {/* Achievements column */}
                 <div className="edu__record-achievements">
                   <span className="edu__achievements-label">Achievements</span>
                   {item.achievements && item.achievements.length > 0 ? (
@@ -253,58 +229,89 @@ const Education = () => {
                     </div>
                   )}
                 </div>
-
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* ==================== ZONE 3 — CERTIFICATIONS TABLE ==================== */}
+      {/* ==================== ZONE 3 — CERTIFICATIONS ==================== */}
       <div className="edu__zone-3">
 
-        {/* Table header */}
-        <div className="edu__table-header" aria-hidden="true">
-          <div className="edu__th edu__th--index">#</div>
-          <div className="edu__th edu__th--cert">Certification</div>
-          <div className="edu__th edu__th--issuer">Issuer</div>
-          <div className="edu__th edu__th--year">Year</div>
+        {/* Section label */}
+        <div className="edu__cert-section-header">
+          <div className="edu__cert-section-label">
+            <Award className="edu__cert-section-icon" />
+            <span>Professional Certifications</span>
+          </div>
+          <div className="edu__cert-section-count">
+            {certifications.length} Credentials
+          </div>
         </div>
 
-        {/* Table body */}
-        <div className="edu__table-body">
+        {/* Certification cards grid */}
+        <div className="edu__cert-grid">
           {displayedCerts.map((cert, index) => (
             <div
               key={`${cert.title}-${index}`}
               ref={(el) => {
                 certRowRefs.current[index] = el
               }}
-              className={`edu__cert-row ${
-                visibleCertRows.has(index) ? 'edu__cert-row--visible' : ''
-              } ${exitingCertRows.has(index) ? 'edu__cert-row--exiting' : ''}`}
+              className={`edu__cert-card ${
+                visibleCertRows.has(index) ? 'edu__cert-card--visible' : ''
+              } ${exitingCertRows.has(index) ? 'edu__cert-card--exiting' : ''}`}
               style={{
                 transitionDelay: visibleCertRows.has(index)
-                  ? `${index * 50}ms`
+                  ? `${index * 80}ms`
                   : '0ms',
               }}
+              onMouseEnter={() => setHoveredCert(index)}
+              onMouseLeave={() => setHoveredCert(null)}
             >
-              <div className="edu__td edu__td--index">
-                {String(index + 1).padStart(2, '0')}
-              </div>
+              {/* Glow effect on hover */}
+              <div className="edu__cert-card-glow" />
 
-              <div className="edu__td edu__td--cert">
-                <span className="edu__cert-title">{cert.title}</span>
-                {/* ✅ uses cert.id — correct field name */}
+              {/* Top accent bar */}
+              <div className="edu__cert-card-accent" />
+
+              {/* Card content */}
+              <div className="edu__cert-card-content">
+
+                {/* Index and year row */}
+                <div className="edu__cert-card-meta">
+                  <span className="edu__cert-card-index">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="edu__cert-card-year">{cert.date}</span>
+                </div>
+
+                {/* Title */}
+                <h4 className="edu__cert-card-title">{cert.title}</h4>
+
+                {/* Issuer */}
+                <div className="edu__cert-card-issuer">
+                  <div className="edu__cert-card-issuer-dot" />
+                  <span>{cert.issuer}</span>
+                </div>
+
+                {/* Credential ID */}
                 {cert.id && (
-                  <span className="edu__cert-id">{cert.id}</span>
+                  <div className="edu__cert-card-id">
+                    <span className="edu__cert-card-id-label">ID</span>
+                    <span className="edu__cert-card-id-value">{cert.id}</span>
+                  </div>
                 )}
               </div>
 
-              {/* ✅ uses cert.issuer — correct field name */}
-              <div className="edu__td edu__td--issuer">{cert.issuer}</div>
-
-              {/* ✅ uses cert.date — correct field name */}
-              <div className="edu__td edu__td--year">{cert.date}</div>
+              {/* Bottom decoration */}
+              <div className="edu__cert-card-footer">
+                <div className="edu__cert-card-footer-line" />
+                <Award
+                  className={`edu__cert-card-badge ${
+                    hoveredCert === index ? 'edu__cert-card-badge--active' : ''
+                  }`}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -314,10 +321,19 @@ const Education = () => {
       {certifications.length > CERTS_INITIAL && (
         <div className="edu__zone-4">
           <div className="edu__show-more-bar">
-            <span className="edu__cert-count-text">
-              Showing {displayedCerts.length} of {certifications.length}{' '}
-              certifications
-            </span>
+            <div className="edu__show-more-left">
+              <div className="edu__show-more-progress">
+                <div
+                  className="edu__show-more-progress-fill"
+                  style={{
+                    width: `${(displayedCerts.length / certifications.length) * 100}%`,
+                  }}
+                />
+              </div>
+              <span className="edu__cert-count-text">
+                {displayedCerts.length} / {certifications.length} certifications
+              </span>
+            </div>
             <button
               type="button"
               onClick={handleToggleCerts}
@@ -328,7 +344,10 @@ const Education = () => {
                   : 'Show all certifications'
               }
             >
-              <span>{showAllCerts ? 'Show Less' : 'View All'}</span>
+              <span className="edu__toggle-button-bg" />
+              <span className="edu__toggle-button-text">
+                {showAllCerts ? 'Show Less' : 'View All'}
+              </span>
               {showAllCerts ? (
                 <ChevronUp className="edu__toggle-icon" />
               ) : (
@@ -338,7 +357,6 @@ const Education = () => {
           </div>
         </div>
       )}
-
     </section>
   )
 }

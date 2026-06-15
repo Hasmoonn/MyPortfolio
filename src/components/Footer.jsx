@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Github, Linkedin, Facebook, Mail, ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
+import { Github, Linkedin, Facebook, Mail, ArrowUpRight } from 'lucide-react'
 import '../styles/footer.css'
 
 const NAV_LINKS = [
@@ -11,406 +10,210 @@ const NAV_LINKS = [
   { name: 'Contact', href: '#contact' },
 ]
 
-const INFO_ITEMS = [
-  'Sri Lanka',
-  'UTC+5:30',
-  'Open to Remote',
-]
-
 const SOCIAL_LINKS = [
   { name: 'GitHub', href: 'https://github.com/Hasmoonn', icon: Github },
-  {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/mohamed-hasmoon-0292732a1/',
-    icon: Linkedin,
-  },
-  {
-    name: 'Facebook',
-    href: 'https://www.facebook.com/share/1FFV5VcUhe/',
-    icon: Facebook,
-  },
-  {
-    name: 'Email',
-    href: 'mailto:mohamedhasmoon175@gmail.com',
-    icon: Mail,
-  },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/mohamed-hasmoon-0292732a1/', icon: Linkedin },
+  { name: 'Facebook', href: 'https://www.facebook.com/share/1FFV5VcUhe/', icon: Facebook },
+  { name: 'Email', href: 'mailto:mohamedhasmoon175@gmail.com', icon: Mail },
 ]
 
 const Footer = () => {
-  const band1LeftRef = useRef(null)
-  const band1RightRef = useRef(null)
-  const band2Ref = useRef(null)
-  const band3Ref = useRef(null)
-  const lastScrollY = useRef(window.scrollY)
+  const [heroVis, setHeroVis] = useState(false)
+  const [heroExit, setHeroExit] = useState(false)
+  const [gridVis, setGridVis] = useState(false)
+  const [gridExit, setGridExit] = useState(false)
+  const [barVis, setBarVis] = useState(false)
+  const [barExit, setBarExit] = useState(false)
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 })
 
-  const [band1LeftVisible, setBand1LeftVisible] = useState(false)
-  const [band1LeftExiting, setBand1LeftExiting] = useState(false)
-  const [band1RightVisible, setBand1RightVisible] = useState(false)
-  const [band1RightExiting, setBand1RightExiting] = useState(false)
+  const footerRef = useRef(null)
+  const heroRef = useRef(null)
+  const gridRef = useRef(null)
+  const barRef = useRef(null)
+  const lastScroll = useRef(window.scrollY)
 
-  const [band2ColVisible, setBand2ColVisible] = useState([false, false, false])
-  const [band2Exiting, setBand2Exiting] = useState(false)
-
-  const [band3Visible, setBand3Visible] = useState(false)
-  const [band3Exiting, setBand3Exiting] = useState(false)
-
-  // Inner stagger states for Band 1
-  const [leftStage, setLeftStage] = useState({
-    label: false,
-    statement: false,
-    sub: false,
-  })
-  const [rightStage, setRightStage] = useState({
-    label: false,
-    email: false,
-    dot: false,
-  })
-
-  const leftAnimatedRef = useRef(false)
-  const rightAnimatedRef = useRef(false)
-  const band2AnimatedRef = useRef(false)
-
-  // Track scroll direction
   useEffect(() => {
-    const handleScroll = () => {
-      lastScrollY.current = window.scrollY
+    const fn = () => { lastScroll.current = window.scrollY }
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
+  }, [])
+
+  const handleMouse = (e) => {
+    const rect = footerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setMousePos({
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
+    })
+  }
+
+  useEffect(() => {
+    const makeObs = (ref, setVis, setEx) => {
+      const el = ref.current
+      if (!el) return null
+      const obs = new IntersectionObserver(([entry]) => {
+        const down = window.scrollY >= lastScroll.current
+        if (entry.isIntersecting) { setVis(true); setEx(false) }
+        else if (!down) { setEx(true); setVis(false) }
+      }, { threshold: 0.1, rootMargin: '-5% 0px -5% 0px' })
+      obs.observe(el)
+      return obs
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const o1 = makeObs(heroRef, setHeroVis, setHeroExit)
+    const o2 = makeObs(gridRef, setGridVis, setGridExit)
+    const o3 = makeObs(barRef, setBarVis, setBarExit)
+    return () => { o1?.disconnect(); o2?.disconnect(); o3?.disconnect() }
   }, [])
 
-  // Band 1 — Left column
-  useEffect(() => {
-    const el = band1LeftRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setBand1LeftVisible(true)
-          setBand1LeftExiting(false)
-          if (!leftAnimatedRef.current) {
-            leftAnimatedRef.current = true
-            setTimeout(
-              () => setLeftStage((p) => ({ ...p, label: true })),
-              0,
-            )
-            setTimeout(
-              () => setLeftStage((p) => ({ ...p, statement: true })),
-              150,
-            )
-            setTimeout(
-              () => setLeftStage((p) => ({ ...p, sub: true })),
-              300,
-            )
-          }
-        } else if (!scrollingDown) {
-          setBand1LeftExiting(true)
-          setBand1LeftVisible(false)
-        }
-      },
-      { threshold: 0.1, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Band 1 — Right column
-  useEffect(() => {
-    const el = band1RightRef.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setBand1RightVisible(true)
-          setBand1RightExiting(false)
-          if (!rightAnimatedRef.current) {
-            rightAnimatedRef.current = true
-            setTimeout(
-              () => setRightStage((p) => ({ ...p, label: true })),
-              100,
-            )
-            setTimeout(
-              () => setRightStage((p) => ({ ...p, email: true })),
-              200,
-            )
-            setTimeout(
-              () => setRightStage((p) => ({ ...p, dot: true })),
-              350,
-            )
-          }
-        } else if (!scrollingDown) {
-          setBand1RightExiting(true)
-          setBand1RightVisible(false)
-        }
-      },
-      { threshold: 0.1, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Band 2 — Navigation band (staggered columns)
-  useEffect(() => {
-    const el = band2Ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setBand2Exiting(false)
-          if (!band2AnimatedRef.current) {
-            band2AnimatedRef.current = true
-            ;[0, 1, 2].forEach((i) => {
-              setTimeout(() => {
-                setBand2ColVisible((prev) => {
-                  const next = [...prev]
-                  next[i] = true
-                  return next
-                })
-              }, i * 80)
-            })
-          }
-        } else if (!scrollingDown) {
-          setBand2Exiting(true)
-          setBand2ColVisible([false, false, false])
-          band2AnimatedRef.current = false
-        }
-      },
-      { threshold: 0.1, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // Band 3 — Closing bar
-  useEffect(() => {
-    const el = band3Ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const scrollingDown = window.scrollY >= lastScrollY.current
-        if (entry.isIntersecting) {
-          setBand3Visible(true)
-          setBand3Exiting(false)
-        } else if (!scrollingDown) {
-          setBand3Exiting(true)
-          setBand3Visible(false)
-        }
-      },
-      { threshold: 0.1, rootMargin: '-5% 0px -5% 0px' },
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+  const mx = (mousePos.x - 0.5) * 15
+  const my = (mousePos.y - 0.5) * 15
 
   return (
-    <footer className="footer" aria-label="Site footer">
-      {/* ==================== BAND 1 — STATEMENT ==================== */}
-      <div className="footer__band-1">
-        <div className="footer__band-1-inner">
-          {/* Left column */}
+    <footer
+      ref={footerRef}
+      className="ft"
+      aria-label="Site footer"
+      onMouseMove={handleMouse}
+    >
+      {/* ====== BAND 1 — CINEMATIC CTA ====== */}
+      <div
+        ref={heroRef}
+        className={`ft__hero ${heroVis ? 'ft__hero--in' : ''} ${heroExit ? 'ft__hero--out' : ''}`}
+      >
+        {/* Parallax watermark */}
+        <div
+          className="ft__hero-watermark"
+          style={{ transform: `translate(${mx * 0.8}px, ${my * 0.8}px)` }}
+          aria-hidden="true"
+        >
+          MOON
+        </div>
+
+        {/* Floating accent lines */}
+        <div className="ft__hero-lines" aria-hidden="true">
           <div
-            ref={band1LeftRef}
-            className={`footer__band-1-left ${
-              band1LeftVisible ? 'footer__band-1-left--visible' : ''
-            } ${band1LeftExiting ? 'footer__band-1-left--exiting' : ''}`}
-          >
-            <span
-              className={`footer__statement-label ${
-                leftStage.label ? 'footer__statement-label--visible' : ''
-              }`}
-            >
-              — Let&apos;s Build Something
-            </span>
-            <div
-              className={`footer__statement-rule ${
-                leftStage.label ? 'footer__statement-rule--visible' : ''
-              }`}
-            />
-            <h2
-              className={`footer__statement ${
-                leftStage.statement ? 'footer__statement--visible' : ''
-              }`}
-            >
-              Available for work.
-            </h2>
-            <p
-              className={`footer__statement-sub ${
-                leftStage.sub ? 'footer__statement-sub--visible' : ''
-              }`}
-            >
-              Open to freelance, full-time, and collaborations.
-            </p>
+            className="ft__hero-line ft__hero-line--1"
+            style={{ transform: `translate(${mx * 0.3}px, ${my * 0.2}px)` }}
+          />
+          <div
+            className="ft__hero-line ft__hero-line--2"
+            style={{ transform: `translate(${mx * -0.2}px, ${my * -0.15}px)` }}
+          />
+        </div>
+
+        <div className="ft__hero-content">
+          <div className="ft__hero-eyebrow">
+            <span className="ft__hero-eyebrow-line" />
+            <span>Let's Build Something</span>
           </div>
 
-          {/* Right column */}
-          <div
-            ref={band1RightRef}
-            className={`footer__band-1-right ${
-              band1RightVisible ? 'footer__band-1-right--visible' : ''
-            } ${band1RightExiting ? 'footer__band-1-right--exiting' : ''}`}
-          >
-            <div className="footer__cta-top">
-              <span
-                className={`footer__cta-label ${
-                  rightStage.label ? 'footer__cta-label--visible' : ''
-                }`}
-              >
-                — Start a conversation
-              </span>
-              <a
-                href="mailto:mohamedhasmoon175@gmail.com"
-                className={`footer__email-link ${
-                  rightStage.email ? 'footer__email-link--visible' : ''
-                }`}
-                aria-label="Send email to Mohamed Hasmoon"
-              >
-                <span className="footer__email-text">
-                  mohamedhasmoon175@gmail.com
-                </span>
-                <ArrowRight
-                  className="footer__email-arrow"
-                  aria-hidden="true"
-                />
-              </a>
-            </div>
+          <h2 className="ft__hero-title">
+            <span className="ft__hero-title-line">
+              <span className="ft__hero-title-word">Available</span>
+            </span>
+            <span className="ft__hero-title-line">
+              <span className="ft__hero-title-word ft__hero-title-word--accent">for Work.</span>
+            </span>
+          </h2>
 
-            <div
-              className={`footer__availability ${
-                rightStage.dot ? 'footer__availability--visible' : ''
-              }`}
-            >
-              <span className="footer__pulse-dot" aria-hidden="true" />
-              <span className="footer__availability-text">Available now</span>
-            </div>
+          <p className="ft__hero-desc">
+            Open to freelance, full-time, and collaborations.
+          </p>
+
+          <a
+            href="mailto:mohamedhasmoon175@gmail.com"
+            className="ft__hero-cta"
+          >
+            <span className="ft__hero-cta-bg" />
+            <span className="ft__hero-cta-content">
+              <Mail className="ft__hero-cta-icon" />
+              <span>mohamedhasmoon175@gmail.com</span>
+              <ArrowUpRight className="ft__hero-cta-arrow" />
+            </span>
+          </a>
+
+          <div className="ft__hero-status">
+            <span className="ft__hero-status-dot" />
+            <span>Available Now</span>
           </div>
         </div>
       </div>
 
-      {/* ==================== BAND 2 — NAVIGATION ==================== */}
-      <div ref={band2Ref} className="footer__band-2">
-        <div className="footer__band-2-inner">
-          {/* Logo column */}
-          <div
-            className={`footer__nav-col footer__nav-col--logo ${
-              band2ColVisible[0] && !band2Exiting
-                ? 'footer__nav-col--visible'
-                : ''
-            } ${band2Exiting ? 'footer__nav-col--exiting' : ''}`}
-          >
-            <a href="#home" className="footer__logo" aria-label="Back to top">
-              <span className="footer__logo-text">HASMOON_DEV</span>
-            </a>
-            <p className="footer__logo-desc">
-              Software Engineer · MERN Stack · ML
-            </p>
+      {/* ====== BAND 2 — NAVIGATION GRID ====== */}
+      <div
+        ref={gridRef}
+        className={`ft__grid ${gridVis ? 'ft__grid--in' : ''} ${gridExit ? 'ft__grid--out' : ''}`}
+      >
+        {/* Col 1 — Brand */}
+        <div className="ft__grid-col ft__grid-col--brand">
+          <a href="#home" className="ft__brand" aria-label="Back to top">
+            HASMOON_DEV
+          </a>
+          <p className="ft__brand-desc">
+            Software Engineer crafting modern digital experiences.
+          </p>
+        </div>
+
+        {/* Col 2 — Navigation */}
+        <div className="ft__grid-col">
+          <span className="ft__grid-label">Navigation</span>
+          <div className="ft__grid-links">
+            {NAV_LINKS.map((link) => (
+              <a key={link.name} href={link.href} className="ft__grid-link">
+                <span>{link.name}</span>
+              </a>
+            ))}
           </div>
+        </div>
 
-          {/* Navigation links column */}
-          <div
-            className={`footer__nav-col footer__nav-col--links ${
-              band2ColVisible[1] && !band2Exiting
-                ? 'footer__nav-col--visible'
-                : ''
-            } ${band2Exiting ? 'footer__nav-col--exiting' : ''}`}
-            style={{ transitionDelay: band2Exiting ? '0ms' : '80ms' }}
-          >
-            <div className="footer__links-grid">
-              <div className="footer__links-sub">
-                <span className="footer__nav-col-label">Navigation</span>
-                {NAV_LINKS.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="footer__nav-link"
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-
-              <div className="footer__links-sub">
-                <span className="footer__nav-col-label">Info</span>
-                {INFO_ITEMS.map((item) => (
-                  <span key={item} className="footer__info-item">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Social column */}
-          <div
-            className={`footer__nav-col footer__nav-col--social ${
-              band2ColVisible[2] && !band2Exiting
-                ? 'footer__nav-col--visible'
-                : ''
-            } ${band2Exiting ? 'footer__nav-col--exiting' : ''}`}
-            style={{ transitionDelay: band2Exiting ? '0ms' : '160ms' }}
-          >
-            <span className="footer__nav-col-label">Connect</span>
-            {SOCIAL_LINKS.map((social, idx) => {
-              const Icon = social.icon
+        {/* Col 3 — Social */}
+        <div className="ft__grid-col">
+          <span className="ft__grid-label">Connect</span>
+          <div className="ft__grid-links">
+            {SOCIAL_LINKS.map((s) => {
+              const Icon = s.icon
               return (
-                <Link
-                  key={social.name}
-                  to={social.href}
-                  target={
-                    social.href.startsWith('mailto') ? undefined : '_blank'
-                  }
-                  rel={
-                    social.href.startsWith('mailto')
-                      ? undefined
-                      : 'noopener noreferrer'
-                  }
-                  className="footer__social-row"
-                  aria-label={social.name}
-                  style={{
-                    transitionDelay:
-                      band2ColVisible[2] && !band2Exiting
-                        ? `${160 + idx * 40}ms`
-                        : '0ms',
-                  }}
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target={s.href.startsWith('mailto') ? undefined : '_blank'}
+                  rel={s.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                  className="ft__grid-social"
                 >
-                  <span className="footer__social-name">{social.name}</span>
-                  <Icon
-                    className="footer__social-icon"
-                    aria-hidden="true"
-                  />
-                </Link>
+                  <Icon className="ft__grid-social-icon" />
+                  <span>{s.name}</span>
+                  <ArrowUpRight className="ft__grid-social-arrow" />
+                </a>
               )
             })}
           </div>
         </div>
+
+        {/* Col 4 — Info */}
+        <div className="ft__grid-col">
+          <span className="ft__grid-label">Info</span>
+          <div className="ft__grid-links">
+            <span className="ft__grid-info">Sri Lanka</span>
+            <span className="ft__grid-info">UTC +5:30</span>
+            <span className="ft__grid-info">Open to Remote</span>
+          </div>
+        </div>
       </div>
 
-      {/* ==================== BAND 3 — CLOSING BAR ==================== */}
+      {/* ====== BAND 3 — BOTTOM BAR ====== */}
       <div
-        ref={band3Ref}
-        className={`footer__band-3 ${
-          band3Visible ? 'footer__band-3--visible' : ''
-        } ${band3Exiting ? 'footer__band-3--exiting' : ''}`}
+        ref={barRef}
+        className={`ft__bar ${barVis ? 'ft__bar--in' : ''} ${barExit ? 'ft__bar--out' : ''}`}
       >
-        <div className="footer__band-3-inner">
-          <span className="footer__copy">© 2025 Mohamed Hasmoon</span>
-          <span className="footer__build-info" aria-hidden="true">
-            React · Tailwind · Vite
-          </span>
-          <span className="footer__attribution">
-            Designed &amp; Built by Hasmoon
-          </span>
+        <span className="ft__bar-text">© 2025 Mohamed Hasmoon</span>
+        <div className="ft__bar-center">
+          <span className="ft__bar-dot" />
+          <span className="ft__bar-text">React · Tailwind · Vite</span>
+          <span className="ft__bar-dot" />
         </div>
+        <span className="ft__bar-text ft__bar-text--accent">
+          Designed & Built by Hasmoon
+        </span>
       </div>
     </footer>
   )

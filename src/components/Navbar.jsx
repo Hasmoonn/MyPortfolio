@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import '../styles/navbar.css'
@@ -19,6 +19,33 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState('#home')
 
   const progressRef = useRef(null)
+
+  const handleNavClick = (e, href) => {
+    if (href.startsWith('#')) {
+      e.preventDefault()
+      const targetId = href.slice(1)
+      const target = document.getElementById(targetId)
+      if (target) {
+        document.body.classList.add('is-navigating')
+        
+        target.scrollIntoView({ behavior: 'smooth' })
+        
+        const onScrollEnd = () => {
+          document.body.classList.remove('is-navigating')
+          window.dispatchEvent(new CustomEvent('nav-scroll-end'))
+          window.removeEventListener('scrollend', onScrollEnd)
+        }
+        
+        if ('onscrollend' in window) {
+          window.addEventListener('scrollend', onScrollEnd)
+        } else {
+          setTimeout(onScrollEnd, 1000)
+        }
+        
+        setIsMobileMenuOpen(false)
+      }
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,6 +124,7 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className={`navbar__link ${
                     activeSection === item.href ? 'navbar__link--active' : ''
                   }`}
@@ -139,7 +167,7 @@ const Navbar = () => {
               key={item.name}
               href={item.href}
               className="navbar__mobile-link"
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={(e) => handleNavClick(e, item.href)}
             >
               {item.name}
             </a>

@@ -1,6 +1,5 @@
 /* ==============================================
-   Education Section — Cinematic Senior Developer
-   Four Distinct Zones
+   Education Section — Full Color Fix Applied
    ============================================== */
 
 .edu {
@@ -19,7 +18,6 @@
   min-height: auto;
 }
 
-/* Zone 1 — Left Column */
 .edu__zone-1-left {
   position: relative;
   padding: 3rem 2rem 3rem 3rem;
@@ -33,7 +31,7 @@
   font-size: clamp(80px, 20vw, 180px);
   font-weight: 900;
   line-height: 1;
-  -webkit-text-stroke: 1px rgb(var(--border));
+  -webkit-text-stroke: 2px rgba(var(--foreground), 0.12);
   -webkit-text-fill-color: transparent;
   color: transparent;
   opacity: 0;
@@ -58,7 +56,6 @@
   margin-bottom: 1rem;
 }
 
-/* Zone 1 — Right Column */
 .edu__zone-1-right {
   padding: 3rem 3rem;
   display: flex;
@@ -103,7 +100,7 @@
 }
 
 .edu__intro-text {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   line-height: 1.9;
   color: rgb(var(--muted-foreground));
   max-width: 480px;
@@ -131,7 +128,6 @@
   position: relative;
 }
 
-/* ---- Spine ---- */
 .edu__spine {
   position: relative;
   display: flex;
@@ -148,12 +144,10 @@
   background: rgb(var(--border));
 }
 
-/* ---- Records container ---- */
 .edu__records {
   border-left: none;
 }
 
-/* ---- Single record ---- */
 .edu__record {
   position: relative;
   border-bottom: 1px solid rgb(var(--border));
@@ -174,10 +168,9 @@
 }
 
 .edu__record:hover {
-  background-color: rgba(var(--foreground), 0.02);
+  background-color: rgba(var(--foreground), 0.025);
 }
 
-/* ---- Spine marker dot ---- */
 .edu__spine-marker {
   position: absolute;
   left: calc(-8vw * 0.5 - 4px);
@@ -201,7 +194,6 @@
   border-color: rgb(var(--primary));
 }
 
-/* ---- Record inner grid ---- */
 .edu__record-inner {
   display: grid;
   grid-template-columns: 15% 65% 20%;
@@ -209,7 +201,6 @@
   gap: 0;
 }
 
-/* ---- Date column ---- */
 .edu__record-date {
   padding-right: 2rem;
   border-right: 1px solid rgb(var(--border));
@@ -225,10 +216,9 @@
   color: rgb(var(--primary));
   line-height: 1.7;
   white-space: pre-line;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* ---- Degree column ---- */
 .edu__record-degree {
   padding: 0 2rem;
   border-right: 1px solid rgb(var(--border));
@@ -248,12 +238,13 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: rgb(var(--foreground));
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 0.35rem 0;
   line-height: 1.3;
 }
 
 .edu__institution {
   font-size: 0.875rem;
+  font-weight: 500;
   color: rgb(var(--muted-foreground));
   margin: 0 0 1rem 0;
 }
@@ -267,12 +258,11 @@
 
 .edu__degree-description {
   font-size: 0.875rem;
-  line-height: 1.8;
+  line-height: 1.85;
   color: rgb(var(--muted-foreground));
   margin: 0;
 }
 
-/* ---- Achievements column ---- */
 .edu__record-achievements {
   padding-left: 2rem;
   display: flex;
@@ -290,11 +280,12 @@
 }
 
 .edu__achievement-item {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: rgb(var(--muted-foreground));
   padding: 0.5rem 0;
   border-bottom: 1px solid rgb(var(--border));
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .edu__achievement-item:last-child {
@@ -302,154 +293,317 @@
 }
 
 .edu__achievement-item--empty {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
-/* ==================== ZONE 3 — CERTIFICATIONS TABLE ==================== */
+/* ==================== ZONE 3 — CERTIFICATIONS ==================== */
 .edu__zone-3 {
   border-bottom: 1px solid rgb(var(--border));
+  padding: 0;
 }
 
-/* ---- Table header row ---- */
-.edu__table-header {
-  display: grid;
-  grid-template-columns: 80px 1fr 200px 100px;
-  background: rgba(var(--foreground), 0.02);
-  border-bottom: 1px solid rgb(var(--border));
-}
-
-.edu__th {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgb(var(--muted-foreground));
-  padding: 1rem 1.5rem;
-  border-right: 1px solid rgb(var(--border));
-}
-
-.edu__th:last-child {
-  border-right: none;
-  text-align: right;
-}
-
-.edu__th--year {
-  text-align: right;
-}
-
-/* ---- Table body ---- */
-.edu__table-body {
-  display: flex;
-  flex-direction: column;
-}
-
-/* ---- Cert rows ---- */
-.edu__cert-row {
-  display: grid;
-  grid-template-columns: 80px 1fr 200px 100px;
-  border-bottom: 1px solid rgb(var(--border));
-  border-left: 2px solid transparent;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: opacity 0.5s cubic-bezier(0.77, 0, 0.175, 1),
-              transform 0.5s cubic-bezier(0.77, 0, 0.175, 1),
-              background-color 0.2s ease,
-              border-left-color 0.2s ease;
-}
-
-.edu__cert-row:last-child {
-  border-bottom: none;
-}
-
-.edu__cert-row--visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.edu__cert-row--exiting {
-  opacity: 0;
-  transform: translateX(-10px);
-}
-
-.edu__cert-row:hover {
-  background-color: rgba(var(--foreground), 0.02);
-  border-left-color: rgb(var(--primary));
-}
-
-.edu__cert-row:hover .edu__td {
-  color: rgb(var(--foreground));
-}
-
-/* ---- Table cells ---- */
-.edu__td {
-  padding: 1.25rem 1.5rem;
-  border-right: 1px solid rgb(var(--border));
+.edu__cert-section-header {
   display: flex;
   align-items: center;
-  transition: color 0.2s ease;
+  justify-content: space-between;
+  padding: 2rem 3rem;
+  border-bottom: 1px solid rgb(var(--border));
+  border-top: 2px solid rgb(var(--primary));
 }
 
-.edu__td:last-child {
+.edu__cert-section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(var(--primary));
+  font-weight: 700;
+}
+
+.edu__cert-section-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: rgb(var(--primary));
+}
+
+.edu__cert-section-count {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(var(--muted-foreground));
+  background: rgba(var(--foreground), 0.05);
+  padding: 0.375rem 1rem;
+  border-radius: 100px;
+  border: 1px solid rgb(var(--border));
+}
+
+/* ---- Certification Grid ---- */
+.edu__cert-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+/* ---- Certification Card ---- */
+.edu__cert-card {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid rgb(var(--border));
+  border-bottom: 1px solid rgb(var(--border));
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+              background-color 0.4s ease;
+  cursor: default;
+}
+
+.edu__cert-card:nth-child(2n) {
   border-right: none;
 }
 
-.edu__td--index {
+.edu__cert-card--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.edu__cert-card--exiting {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+}
+
+/* Glow effect */
+.edu__cert-card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary), 0.07) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.edu__cert-card:hover .edu__cert-card-glow {
+  opacity: 1;
+}
+
+.edu__cert-card:hover {
+  background-color: rgba(var(--foreground), 0.02);
+}
+
+/* Top accent bar */
+.edu__cert-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--primary)) 0%,
+    rgba(var(--primary-glow), 0.6) 50%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.edu__cert-card:hover .edu__cert-card-accent {
+  transform: scaleX(1);
+}
+
+/* Card content */
+.edu__cert-card-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 2.5rem 1.5rem;
+}
+
+/* Meta row: index + year */
+.edu__cert-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.edu__cert-card-index {
   font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   letter-spacing: 0.3em;
   color: rgb(var(--muted-foreground));
+  font-weight: 700;
 }
 
-.edu__td--cert {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.25rem;
-}
-
-.edu__cert-title {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgb(var(--foreground));
-  line-height: 1.4;
-}
-
-.edu__cert-id {
+.edu__cert-card-year {
   font-family: 'Courier New', monospace;
-  font-size: 10px;
-  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgb(var(--primary));
+  background: rgba(var(--primary), 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  font-weight: 700;
+  transition: background 0.3s ease;
+}
+
+.edu__cert-card:hover .edu__cert-card-year {
+  background: rgba(var(--primary), 0.18);
+}
+
+/* Title */
+.edu__cert-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(var(--foreground));
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+  transition: color 0.3s ease;
+  min-height: 3rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Issuer */
+.edu__cert-card-issuer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgb(var(--muted-foreground));
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.edu__cert-card-issuer-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--primary));
+  opacity: 0.7;
+  flex-shrink: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.edu__cert-card:hover .edu__cert-card-issuer-dot {
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+.edu__cert-card:hover .edu__cert-card-issuer {
+  color: rgb(var(--foreground));
+}
+
+/* Credential ID */
+.edu__cert-card-id {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.edu__cert-card-id-label {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(var(--muted-foreground));
+  background: rgba(var(--foreground), 0.06);
+  padding: 0.125rem 0.5rem;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.edu__cert-card-id-value {
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
   color: rgb(var(--muted-foreground));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: 200px;
 }
 
-.edu__td--issuer {
-  font-size: 0.875rem;
-  color: rgb(var(--muted-foreground));
+/* Card footer */
+.edu__cert-card-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem;
+  border-top: 1px solid rgb(var(--border));
 }
 
-.edu__td--year {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: rgb(var(--muted-foreground));
-  justify-content: flex-end;
-  text-align: right;
+.edu__cert-card-footer-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--primary)) 0%,
+    transparent 100%
+  );
+}
+
+.edu__cert-card-badge {
+  width: 1rem;
+  height: 1rem;
+  color: rgba(var(--muted-foreground), 0.4);
+  transition: color 0.4s ease, transform 0.4s ease;
+  margin-left: 1rem;
+}
+
+.edu__cert-card-badge--active {
+  color: rgb(var(--primary));
+  transform: scale(1.2) rotate(10deg);
 }
 
 /* ==================== ZONE 4 — SHOW MORE BAR ==================== */
 .edu__zone-4 {
-  border-top: 1px solid rgb(var(--border));
+  border-top: none;
 }
 
 .edu__show-more-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 3rem;
+  padding: 1.75rem 3rem;
   gap: 2rem;
+}
+
+.edu__show-more-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.edu__show-more-progress {
+  width: 80px;
+  height: 3px;
+  background: rgba(var(--foreground), 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.edu__show-more-progress-fill {
+  height: 100%;
+  background: rgb(var(--primary));
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .edu__cert-count-text {
@@ -461,31 +615,59 @@
 }
 
 .edu__toggle-button {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   background: transparent;
   border: 1px solid rgb(var(--border));
-  border-radius: 0.25rem;
-  padding: 0.5rem 1.5rem;
-  height: 2.25rem;
+  border-radius: 100px;
+  padding: 0.625rem 1.75rem;
+  height: 2.5rem;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgb(var(--muted-foreground));
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+.edu__toggle-button-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--primary), 0.08);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 100px;
+}
+
+.edu__toggle-button:hover .edu__toggle-button-bg {
+  transform: scaleX(1);
 }
 
 .edu__toggle-button:hover {
-  border-color: rgb(var(--foreground));
-  color: rgb(var(--foreground));
+  border-color: rgb(var(--primary));
+  color: rgb(var(--primary));
+}
+
+.edu__toggle-button-text {
+  position: relative;
+  z-index: 1;
 }
 
 .edu__toggle-icon {
   width: 0.875rem;
   height: 0.875rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.edu__toggle-button:hover .edu__toggle-icon {
+  transform: translateY(2px);
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -495,29 +677,20 @@
     grid-template-columns: 35% 1fr;
   }
 
-  .edu__table-header {
-    grid-template-columns: 64px 1fr 160px 80px;
+  .edu__cert-card-content {
+    padding: 1.75rem 2rem 1.25rem;
   }
 
-  .edu__cert-row {
-    grid-template-columns: 64px 1fr 160px 80px;
-  }
-
-  .edu__td {
-    padding: 1.25rem 1rem;
-  }
-
-  .edu__th {
-    padding: 1rem 1rem;
+  .edu__cert-card-footer {
+    padding: 0.875rem 2rem;
   }
 
   .edu__show-more-bar {
-    padding: 1.25rem 2rem;
+    padding: 1.5rem 2rem;
   }
 }
 
 @media (max-width: 1024px) {
-  /* Zone 1 stacks */
   .edu__zone-1-container {
     grid-template-columns: 1fr;
   }
@@ -532,7 +705,6 @@
     padding: 2rem;
   }
 
-  /* Zone 2 — hide spine on tablet/mobile */
   .edu__zone-2 {
     grid-template-columns: 1fr;
   }
@@ -545,7 +717,6 @@
     display: none;
   }
 
-  /* Record inner collapses */
   .edu__record-inner {
     grid-template-columns: 1fr;
     padding: 2rem;
@@ -570,54 +741,12 @@
     padding-top: 1rem;
   }
 
-  /* Cert table collapses */
-  .edu__table-header {
-    display: none;
+  .edu__cert-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .edu__cert-row {
-    grid-template-columns: 1fr;
-    padding: 1.25rem 1.5rem;
-    border-left: 2px solid transparent;
-    gap: 0;
-  }
-
-  .edu__cert-row:hover {
-    border-left-color: rgb(var(--primary));
-  }
-
-  .edu__td {
-    border-right: none;
-    padding: 0.25rem 0;
-  }
-
-  .edu__td--index {
-    display: none;
-  }
-
-  .edu__td--cert {
-    order: 1;
-    padding-bottom: 0.5rem;
-  }
-
-  .edu__td--issuer {
-    order: 2;
-    font-size: 0.8125rem;
-  }
-
-  .edu__td--year {
-    order: 0;
-    justify-content: flex-start;
-    text-align: left;
-    padding-bottom: 0.5rem;
-    font-size: 0.7rem;
-    color: rgb(var(--muted-foreground));
-  }
-
-  /* Mobile cert row: year + (empty) on top line */
-  .edu__cert-row {
-    display: flex;
-    flex-direction: column;
+  .edu__cert-section-header {
+    padding: 1.5rem 2rem;
   }
 
   .edu__show-more-bar {
@@ -653,8 +782,31 @@
     font-size: 1.125rem;
   }
 
-  .edu__cert-row {
-    padding: 1rem 1.25rem;
+  .edu__cert-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edu__cert-card {
+    border-right: none;
+  }
+
+  .edu__cert-card-title {
+    min-height: auto;
+  }
+
+  .edu__cert-section-header {
+    padding: 1.25rem 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .edu__cert-card-content {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+
+  .edu__cert-card-footer {
+    padding: 0.75rem 1.5rem;
   }
 
   .edu__show-more-bar {
@@ -670,8 +822,8 @@
   }
 
   .edu__toggle-button {
-    padding: 0.375rem 1rem;
-    height: 2rem;
+    padding: 0.5rem 1.25rem;
+    height: 2.25rem;
     font-size: 0.7rem;
   }
 }
@@ -722,19 +874,40 @@
   }
 
   .edu__achievement-item {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 
-  .edu__cert-row {
+  .edu__cert-section-header {
     padding: 1rem;
   }
 
-  .edu__cert-title {
-    font-size: 0.8125rem;
+  .edu__cert-section-label {
+    font-size: 0.7rem;
   }
 
-  .edu__td--issuer {
+  .edu__cert-section-count {
+    font-size: 0.625rem;
+  }
+
+  .edu__cert-card-content {
+    padding: 1.25rem 1.25rem 0.75rem;
+  }
+
+  .edu__cert-card-footer {
+    padding: 0.625rem 1.25rem;
+  }
+
+  .edu__cert-card-title {
+    font-size: 0.875rem;
+  }
+
+  .edu__cert-card-issuer {
     font-size: 0.75rem;
+  }
+
+  .edu__cert-card-id-value {
+    max-width: 150px;
+    font-size: 0.6rem;
   }
 
   .edu__show-more-bar {
@@ -751,8 +924,12 @@
   .edu__toggle-button {
     width: 100%;
     justify-content: center;
-    padding: 0.375rem 1rem;
-    height: 2rem;
+    padding: 0.5rem 1rem;
+    height: 2.25rem;
     font-size: 0.65rem;
+  }
+
+  .edu__show-more-progress {
+    width: 60px;
   }
 }
