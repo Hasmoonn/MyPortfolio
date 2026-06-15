@@ -43,33 +43,25 @@ const Index = () => {
           />
         </div>
 
-        <div data-animate>
-          <About />
-        </div>
+        <About />
         <SectionTransition
           fromSection="About"
           toSection="Projects"
           chapterNumber="03"
         />
-        <div data-animate>
-          <Projects />
-        </div>
+        <Projects />
         <SectionTransition
           fromSection="Projects"
           toSection="Education"
           chapterNumber="04"
         />
-        <div data-animate>
-          <Education />
-        </div>
+        <Education />
         <SectionTransition
           fromSection="Education"
           toSection="Contact"
           chapterNumber="05"
         />
-        <div data-animate>
-          <Contact />
-        </div>
+        <Contact />
       </main>
 
       <Footer />

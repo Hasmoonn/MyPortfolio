@@ -8,7 +8,7 @@ const Counter = ({ end, startCount }) => {
     if (!startCount) return
 
     let start = 0
-    const duration = 2000
+    const duration = 1500
     const increment = end / (duration / 20)
 
     const timer = setInterval(() => {

@@ -46,8 +46,6 @@ export function useEntryAnimation() {
           if (!isMountedRef.current) return
           setPhase(ENTRY_PHASE.EXITING)
 
-          // After exit animation duration, go to REVEALING
-          // This is the fallback in case onExitComplete never fires
           revealTimeoutRef.current = window.setTimeout(() => {
             if (!isMountedRef.current) return
             setPhase((prev) =>

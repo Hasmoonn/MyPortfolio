@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronDown, ChevronUp, Github, ExternalLink } from 'lucide-react'
 import { projects } from '../assets/assets.js'
 import '../styles/projects.css'

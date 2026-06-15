@@ -1,6 +1,6 @@
 /* ==============================================
    Section Transition - Cinematic Scroll Between
-   About and Projects Sections
+   Sections with Glowing Background
    ============================================== */
 
 .sect-transition {
@@ -15,8 +15,223 @@
   border-bottom: 1px solid rgb(var(--border));
 }
 
+/* ==================== GLOW BACKGROUND LAYER ==================== */
+
+.sect-transition__glow-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Central radial glow */
+.sect-transition__glow-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--primary), 0.35) 0%,
+    rgba(var(--primary), 0.15) 25%,
+    rgba(var(--primary-glow), 0.06) 50%,
+    transparent 75%
+  );
+  opacity: 0;
+  will-change: opacity, transform;
+  filter: blur(20px);
+}
+
+/* Expanding ring */
+.sect-transition__glow-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.3);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--primary), 0.3);
+  box-shadow:
+    0 0 40px rgba(var(--primary), 0.12),
+    0 0 80px rgba(var(--primary), 0.06),
+    inset 0 0 40px rgba(var(--primary), 0.06);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Second ring — offset timing for layered depth */
+.sect-transition__glow-ring-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--primary), 0.2);
+  box-shadow:
+    0 0 25px rgba(var(--primary-glow), 0.08),
+    inset 0 0 25px rgba(var(--primary-glow), 0.04);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Floating orbs */
+.sect-transition__glow-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.sect-transition__glow-orb--0 {
+  width: 8px;
+  height: 8px;
+  background: rgba(var(--primary), 1);
+  box-shadow:
+    0 0 12px rgba(var(--primary), 0.8),
+    0 0 30px rgba(var(--primary), 0.4),
+    0 0 60px rgba(var(--primary), 0.2);
+}
+
+.sect-transition__glow-orb--1 {
+  width: 12px;
+  height: 12px;
+  background: rgba(var(--primary-glow), 0.9);
+  box-shadow:
+    0 0 14px rgba(var(--primary-glow), 0.7),
+    0 0 35px rgba(var(--primary-glow), 0.35),
+    0 0 70px rgba(var(--primary-glow), 0.15);
+}
+
+.sect-transition__glow-orb--2 {
+  width: 6px;
+  height: 6px;
+  background: rgba(var(--primary), 0.95);
+  box-shadow:
+    0 0 10px rgba(var(--primary), 0.8),
+    0 0 25px rgba(var(--primary), 0.4),
+    0 0 50px rgba(var(--primary), 0.15);
+}
+
+.sect-transition__glow-orb--3 {
+  width: 10px;
+  height: 10px;
+  background: rgba(var(--primary-glow), 0.85);
+  box-shadow:
+    0 0 12px rgba(var(--primary-glow), 0.7),
+    0 0 30px rgba(var(--primary-glow), 0.3),
+    0 0 55px rgba(var(--primary-glow), 0.12);
+}
+
+.sect-transition__glow-orb--4 {
+  width: 5px;
+  height: 5px;
+  background: rgba(var(--primary), 0.9);
+  box-shadow:
+    0 0 8px rgba(var(--primary), 0.8),
+    0 0 20px rgba(var(--primary), 0.4),
+    0 0 45px rgba(var(--primary), 0.15);
+}
+
+/* Ambient pulse — always breathing */
+.sect-transition__glow-ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--primary), 0.12) 0%,
+    rgba(var(--primary), 0.04) 50%,
+    transparent 70%
+  );
+  animation: sect-ambient-pulse 5s ease-in-out infinite;
+  filter: blur(15px);
+}
+
+@keyframes sect-ambient-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+}
+
+/* Cross-hair lines — thin perpendicular lines through center */
+.sect-transition__glow-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.sect-transition__glow-crosshair::before,
+.sect-transition__glow-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(var(--primary), 0.06);
+}
+
+.sect-transition__glow-crosshair::before {
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.sect-transition__glow-crosshair::after {
+  left: 50%;
+  top: 10%;
+  bottom: 10%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+/* Dot grid overlay */
+.sect-transition__glow-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(var(--foreground), 0.35) 1px,
+    transparent 1px
+  );
+  background-size: 40px 40px;
+  will-change: opacity;
+  mask-image: radial-gradient(
+    ellipse 50% 50% at center,
+    black 10%,
+    transparent 65%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 50% 50% at center,
+    black 10%,
+    transparent 65%
+  );
+}
+
 /* ==================== LAYER 1 ==================== */
-/* Giant Chapter Number */
 
 .sect-transition__number-container {
   position: absolute;
@@ -38,10 +253,10 @@
   transform: translateY(40px);
   letter-spacing: -0.02em;
   will-change: opacity, transform;
+  filter: drop-shadow(0 0 30px rgba(var(--primary), 0.25));
 }
 
 /* ==================== LAYER 2 ==================== */
-/* Horizontal Line & Center Square */
 
 .sect-transition__line-container {
   position: absolute;
@@ -60,7 +275,6 @@
 .sect-transition__line {
   position: absolute;
   height: 1px;
-  background: rgb(var(--border));
   will-change: width, opacity;
 }
 
@@ -69,6 +283,12 @@
   width: 0;
   margin-right: 0;
   transform-origin: right center;
+  background: linear-gradient(
+    270deg,
+    rgb(var(--border)) 0%,
+    rgba(var(--primary), 0.25) 40%,
+    transparent 100%
+  );
 }
 
 .sect-transition__line--right {
@@ -76,6 +296,12 @@
   width: 0;
   margin-left: 0;
   transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--border)) 0%,
+    rgba(var(--primary), 0.25) 40%,
+    transparent 100%
+  );
 }
 
 .sect-transition__center-square {
@@ -94,6 +320,9 @@
   z-index: 3;
   opacity: 0;
   will-change: transform, opacity;
+  box-shadow:
+    0 0 15px rgba(var(--primary), 0.1),
+    0 0 30px rgba(var(--primary), 0.05);
 }
 
 .sect-transition__arrow-icon {
@@ -104,7 +333,6 @@
 }
 
 /* ==================== LAYER 3 ==================== */
-/* Text Labels */
 
 .sect-transition__labels {
   position: absolute;
@@ -139,6 +367,110 @@
   right: 3rem;
 }
 
+/* ==================== DARK MODE BOOST ==================== */
+/* Dark backgrounds absorb light — these overrides push glow harder */
+
+:root.dark .sect-transition__glow-center,
+.dark .sect-transition__glow-center {
+  background: radial-gradient(
+    circle,
+    rgba(var(--primary), 0.45) 0%,
+    rgba(var(--primary), 0.2) 25%,
+    rgba(var(--primary-glow), 0.08) 50%,
+    transparent 75%
+  );
+  filter: blur(25px);
+}
+
+:root.dark .sect-transition__glow-ring,
+.dark .sect-transition__glow-ring {
+  border-color: rgba(var(--primary), 0.4);
+  box-shadow:
+    0 0 50px rgba(var(--primary), 0.18),
+    0 0 100px rgba(var(--primary), 0.08),
+    inset 0 0 50px rgba(var(--primary), 0.08);
+}
+
+:root.dark .sect-transition__glow-ring-2,
+.dark .sect-transition__glow-ring-2 {
+  border-color: rgba(var(--primary), 0.3);
+  box-shadow:
+    0 0 35px rgba(var(--primary-glow), 0.12),
+    inset 0 0 35px rgba(var(--primary-glow), 0.06);
+}
+
+:root.dark .sect-transition__glow-orb--0,
+.dark .sect-transition__glow-orb--0 {
+  box-shadow:
+    0 0 14px rgba(var(--primary), 1),
+    0 0 40px rgba(var(--primary), 0.6),
+    0 0 80px rgba(var(--primary), 0.25);
+}
+
+:root.dark .sect-transition__glow-orb--1,
+.dark .sect-transition__glow-orb--1 {
+  box-shadow:
+    0 0 16px rgba(var(--primary-glow), 0.9),
+    0 0 45px rgba(var(--primary-glow), 0.5),
+    0 0 90px rgba(var(--primary-glow), 0.2);
+}
+
+:root.dark .sect-transition__glow-orb--2,
+.dark .sect-transition__glow-orb--2 {
+  box-shadow:
+    0 0 12px rgba(var(--primary), 1),
+    0 0 35px rgba(var(--primary), 0.5),
+    0 0 70px rgba(var(--primary), 0.2);
+}
+
+:root.dark .sect-transition__glow-orb--3,
+.dark .sect-transition__glow-orb--3 {
+  box-shadow:
+    0 0 14px rgba(var(--primary-glow), 0.9),
+    0 0 40px rgba(var(--primary-glow), 0.45),
+    0 0 75px rgba(var(--primary-glow), 0.15);
+}
+
+:root.dark .sect-transition__glow-orb--4,
+.dark .sect-transition__glow-orb--4 {
+  box-shadow:
+    0 0 10px rgba(var(--primary), 1),
+    0 0 28px rgba(var(--primary), 0.5),
+    0 0 60px rgba(var(--primary), 0.2);
+}
+
+:root.dark .sect-transition__glow-ambient,
+.dark .sect-transition__glow-ambient {
+  background: radial-gradient(
+    circle,
+    rgba(var(--primary), 0.2) 0%,
+    rgba(var(--primary), 0.06) 50%,
+    transparent 70%
+  );
+  filter: blur(12px);
+}
+
+:root.dark .sect-transition__glow-crosshair::before,
+.dark .sect-transition__glow-crosshair::before,
+:root.dark .sect-transition__glow-crosshair::after,
+.dark .sect-transition__glow-crosshair::after {
+  background: rgba(var(--primary), 0.1);
+}
+
+:root.dark .sect-transition__glow-grid,
+.dark .sect-transition__glow-grid {
+  background-image: radial-gradient(
+    circle,
+    rgba(var(--foreground), 0.2) 1px,
+    transparent 1px
+  );
+}
+
+:root.dark .sect-transition__number,
+.dark .sect-transition__number {
+  filter: drop-shadow(0 0 40px rgba(var(--primary), 0.4));
+}
+
 /* ==================== RESPONSIVE ==================== */
 
 @media (max-width: 1024px) {
@@ -148,6 +480,26 @@
 
   .sect-transition__label--right {
     right: 1.5rem;
+  }
+
+  .sect-transition__glow-center {
+    width: 420px;
+    height: 420px;
+  }
+
+  .sect-transition__glow-ring {
+    width: 360px;
+    height: 360px;
+  }
+
+  .sect-transition__glow-ring-2 {
+    width: 260px;
+    height: 260px;
+  }
+
+  .sect-transition__glow-ambient {
+    width: 230px;
+    height: 230px;
   }
 }
 
@@ -167,6 +519,36 @@
 
   .sect-transition__label--right {
     right: 1rem;
+  }
+
+  .sect-transition__glow-center {
+    width: 320px;
+    height: 320px;
+    filter: blur(18px);
+  }
+
+  .sect-transition__glow-ring {
+    width: 280px;
+    height: 280px;
+  }
+
+  .sect-transition__glow-ring-2 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .sect-transition__glow-ambient {
+    width: 180px;
+    height: 180px;
+  }
+
+  .sect-transition__glow-grid {
+    background-size: 30px 30px;
+  }
+
+  .sect-transition__glow-orb--3,
+  .sect-transition__glow-orb--4 {
+    display: none;
   }
 }
 
@@ -196,5 +578,56 @@
 
   .sect-transition__label--right {
     right: 0.75rem;
+  }
+
+  .sect-transition__glow-center {
+    width: 220px;
+    height: 220px;
+    filter: blur(15px);
+  }
+
+  .sect-transition__glow-ring {
+    width: 200px;
+    height: 200px;
+  }
+
+  .sect-transition__glow-ring-2 {
+    display: none;
+  }
+
+  .sect-transition__glow-ambient {
+    width: 140px;
+    height: 140px;
+  }
+
+  .sect-transition__glow-grid {
+    display: none;
+  }
+
+  .sect-transition__glow-crosshair {
+    display: none;
+  }
+
+  .sect-transition__glow-orb--2,
+  .sect-transition__glow-orb--3,
+  .sect-transition__glow-orb--4 {
+    display: none;
+  }
+}
+
+/* ==================== REDUCED MOTION ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .sect-transition__glow-ambient {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  .sect-transition__glow-orb {
+    display: none;
+  }
+
+  .sect-transition__glow-ring,
+  .sect-transition__glow-ring-2 {
+    display: none;
   }
 }

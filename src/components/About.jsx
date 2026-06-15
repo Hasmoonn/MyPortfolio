@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { skills } from '../assets/assets.js'
 import Skills from './Skills.jsx'
 import Counter from './Counter.jsx'
@@ -191,7 +191,7 @@ const About = () => {
           >
             <div className="about__stat-block">
               <div className="about__stat-number">
-                <Counter end={20} startCount={statsVisible} />
+                <Counter end={30} startCount={statsVisible} />
                 <span className="about__stat-plus">+</span>
               </div>
               <div className="about__stat-label">Projects</div>
@@ -207,7 +207,7 @@ const About = () => {
 
             <div className="about__stat-block">
               <div className="about__stat-number">
-                <Counter end={5} startCount={statsVisible} />
+                <Counter end={10} startCount={statsVisible} />
                 <span className="about__stat-plus">+</span>
               </div>
               <div className="about__stat-label">Tech Stacks</div>
