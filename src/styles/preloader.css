@@ -165,7 +165,7 @@
   justify-content: center;
   margin: 0;
   font-size: clamp(1.6rem, 6.5vw, 3.75rem);
-  font-weight: 600;
+  font-weight: 900;
   letter-spacing: 0.38em;
   text-indent: 0.38em;
   color: var(--text);
